@@ -1,26 +1,8 @@
-/* Grid */
-/* #landing-page-container {
-  display: grid;
-  grid-template-rows: repeat(1, 2fr);
-  grid-gap: 1em;
-} */
+/* create a new repo, git clone <new-repo>*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* I'm thinking of setting root variables and applying them to each of the CSS elements 
+/* 
+I'm thinking of setting root variables and applying them to each of the CSS elements 
 and using queries for mobile, tablet and desktop settings 
-thinking it would be easier to write with CSS grid?
 */
 
 * {
