@@ -5,10 +5,10 @@ const chirpContext = React.createContext({
   showThread: [],
   createNewThread: [],
   posts: [],
-  handleCreateThread: ()=> {},
-  handleCreatePost: ()=> {},
-  handleEditPost: ()=> {},
-  handleDeletePost: ()=> {}
+  handleCreateThread: () => { },
+  handleCreatePost: () => { },
+  handleEditPost: () => { },
+  handleDeletePost: () => { }
 })
 
 export default chirpContext;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import landingPage from './components/landing-page';
 import messageBoard from './components/message-board';
 import profilePage from './components/profile-page';
@@ -56,7 +56,7 @@ class App extends React.Component {
 
   handleCreatePost = (post) => {
     // look up configuration on MDN/ write pseduocode first
-    this.setState({ post: post })
+    this.setState(post)
   }
   handleEditPost = () => {
 
@@ -76,11 +76,11 @@ class App extends React.Component {
     return (
       <ChirpContext.Provider value={contextValue}>
         {/* <Link to="/message-board">Let's Get Started!</Link> */}
-        <Route path="/" component={landingPage}>
+        <Route exact path="/" component={landingPage}>
         </Route>
-        <Route path="/chirp-message-board" component={messageBoard}>
+        <Route path="/message-board" component={messageBoard}>
         </Route>
-        <Route path="/chirp-profile" component={profilePage}>
+        <Route path="/profile" component={profilePage}>
         </Route>
       </ChirpContext.Provider>
     );

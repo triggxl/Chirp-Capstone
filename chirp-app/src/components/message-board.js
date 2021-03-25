@@ -1,8 +1,21 @@
 import React from 'react';
 import ChirpContext from '../chirp-context/chirpContext';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const messageBoard = () => {
+
+  function HandleRouteToProfilePage() {
+    let history = useHistory();
+    history.push('/profile');
+  }
+  function HandRouteToMyPostsPage() {
+    let history = useHistory();
+    history.push('/my-posts')
+  }
+  function HandleRouteToHomePage() {
+    let history = useHistory();
+    history.push('/');
+  }
 
   return (
     <ChirpContext.Consumer>
@@ -15,16 +28,17 @@ const messageBoard = () => {
             <select name="drop-down-for-mb" id="drop-down-for-mb">
               <option value="my-profile">
                 <Link to="/profile">
-                  <button>My Profile</button>
+                  <button onChange={HandleRouteToProfilePage}>My Profile</button>
                 </Link></option>
               <option value="my-posts">
                 <Link to="/posts">
-                  <button>My Posts</button>
+                  <button onChange={HandRouteToMyPostsPage}>My Posts</button>
                 </Link></option>
               <option value="landing-page">
                 <Link to="/">
-                  <button>Chirp Home Page</button>
-                </Link></option>
+                  <button onChange={HandleRouteToHomePage}>Chirp Home Page</button>
+                </Link>
+              </option>
             </select>
             {/* view post content, contributors */}
             <table id="mb-table">

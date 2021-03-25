@@ -17,7 +17,7 @@ const landingPage = () => {
                 <!-- <img src="./pictures/nathan-dumlao-pMW4jzELQCw-unsplash.jpg" alt="the is a picture of a circular table with cups containing different shades of expresso"> --> */}
             </div>
             <h1 id="site-title">Welcome to Chirp-(En-Passant)!</h1>
-            <Link to="/message-board"><button>Let's Get Started</button></Link>
+            <Link to="/message-board"><button>Let's Get Started!</button></Link>
           </div>
         )
       }}
