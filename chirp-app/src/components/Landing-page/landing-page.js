@@ -1,6 +1,7 @@
 import React from 'react';
-import ChirpContext from '../chirp-context/chirpContext';
+import ChirpContext from '../../chirp-context/chirpContext';
 import { Link } from 'react-router-dom';
+import './landing-page.css';
 
 const landingPage = () => {
   return (
@@ -17,6 +18,7 @@ const landingPage = () => {
                 <!-- <img src="./pictures/nathan-dumlao-pMW4jzELQCw-unsplash.jpg" alt="the is a picture of a circular table with cups containing different shades of expresso"> --> */}
             </div>
             <h1 id="site-title">Welcome to Chirp-(En-Passant)!</h1>
+            <p>(An online blog/message board)</p>
             <Link to="/message-board"><button>Let's Get Started!</button></Link>
           </div>
         )
@@ -25,4 +27,4 @@ const landingPage = () => {
   )
 }
 
-export default landingPage
+export default landingPage;

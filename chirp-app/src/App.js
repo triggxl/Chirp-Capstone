@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import landingPage from './components/landing-page';
-import messageBoard from './components/message-board';
-import profilePage from './components/profile-page';
+import landingPage from './components/Landing-page/landing-page';
+import messageBoard from './components/Message-board/message-board';
+import profilePage from './components/Profile-page/profile-page';
 import ChirpContext from './chirp-context/chirpContext';
 import './App.css';
 

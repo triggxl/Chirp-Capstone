@@ -1,0 +1,12 @@
+@media only screen and (max-width: 900px) {
+  #mb-container {
+    margin: 0, 20%;
+  }
+}
+@media only screen and (max-width: 400px) {
+  #mb-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+  }
+}

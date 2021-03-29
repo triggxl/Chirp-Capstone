@@ -1,0 +1,5 @@
+@media only screen and (max-width: 900px) {
+  #landing-page-container {
+    margin: 0, 20%;
+  }
+}
