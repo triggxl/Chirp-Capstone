@@ -1,0 +1,50 @@
+3/26
+Todo's: 
+[]Add functionality to Message-board
+• if user clicks on title they should be able to view messages in thread (lorem ipsum for mockup)
+• each row should be separated by a line with a box around the border of the container
+[]set up handlers tie to event to produce controlled inputs?
+[]click on thread to view (using dummy data)
+[]use media queries to make responsive
+*keep <tr> inside middle of container
+
+
+Progress:
+[x]Separated logic into different components 
+[x]created default context
+[x]started adding state variables and added 'dummy' data in app to use with context
+[x]wrapped files in Context Provider and Consumer
+[x]started writing boiler plate for handlers in App to use with updating state && context in various components
+[x]map through new posts
+[x]use context to pass relevant data between components
+[x]utilize dummy data file for static client
+[x]set up links to route to display each page's content (in-progress)
+
+Perform build: npm run build
+Test out build: npx serve -s build
+Set up env variables: 1.) add console.log(process.env) 2.) Make temp env export REACT_APP_TEST=supersecretkey!
+3.) 
+...https://courses.thinkful.com/react-v1/checkpoint/18
+
+[] Submit Static client
+
+
+
+MVP:
+
+{/*
+build out everthing in App.js first
+separate in to components...get working with fake data...using 'store.js' or use fake variables...
+create Landing page, MB thread routes 
+
+Login URL as '/' 1 url for all messages and 1 url for messsge:id
+<route> to see the page <Link> to get there
+
+use dummy data file for static client
+---
+MVP
+take these variables into state variables
+add express boilerplate to have server to save posts on + AJAX calls to set 'update' state variable (reference noteful app for desired flow) 
+
+ */
+}
