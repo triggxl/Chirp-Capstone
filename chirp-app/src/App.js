@@ -17,6 +17,7 @@ class App extends React.Component {
     // }],
     posts: [
       {
+        postId: 0,
         postTitle: 'Best Editor EVER!',
         participantsIntials: 'M, K',
         numOfParticipants: 2,
@@ -24,6 +25,7 @@ class App extends React.Component {
         timeOpen: '2 days'
       },
       {
+        postId: 1,
         postTitle: '26 Days of X-mas?!',
         participantsIntials: 'M, K, T, L',
         numOfParticipants: 4,
@@ -31,6 +33,7 @@ class App extends React.Component {
         timeOpen: '3 weeks'
       },
       {
+        postId: 2,
         postTitle: 'Top Specialities in Tech',
         participantsIntials: 'K, M, L, S, S.A',
         numOfParticipants: 5,
@@ -38,6 +41,7 @@ class App extends React.Component {
         timeOpen: '3 days'
       },
       {
+        postId: 3,
         postTitle: 'My First Project EVER! (Share and Discuss)',
         participantsIntials: 'M, K, A, B, T, D, L',
         numOfParticipants: 7,
@@ -45,6 +49,7 @@ class App extends React.Component {
         timeOpen: '2 months'
       },
       {
+        postId: 4,
         postTitle: 'AMA Forum',
         participantsIntials: 'M, K, D, B, S',
         numOfParticipants: 5,
@@ -54,15 +59,24 @@ class App extends React.Component {
     ]
   }
 
-  handleCreatePost = (post) => {
+  handleCreatePost = (posts) => {
     // look up configuration on MDN/ write pseduocode first
-    this.setState(post)
+    this.setState({
+      posts: [...this.state.posts, posts]
+    })
   }
   handleEditPost = () => {
+    // grab existing post
+    // compare changes to old
+    // set old to new post
 
   }
-  handleDeletePost = () => {
+  handleDeletePost = (postId) => {
+    const deletedPost = this.state.posts.filter(post => post.postId !== postId)
 
+    this.setState({
+      posts: deletedPost
+    })
   }
 
   render() {

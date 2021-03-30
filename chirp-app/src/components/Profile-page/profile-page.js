@@ -1,7 +1,9 @@
 import React from 'react';
 import ChirpContext from '../../chirp-context/chirpContext';
 import { Link } from 'react-router-dom';
-import './profile-page.css'
+import './profile-page.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const profilePage = () => {
 
@@ -17,14 +19,14 @@ const profilePage = () => {
               <div id="profile-links">
                 <Link to="/">Home</Link>
                 <Link to="/message-board">Message Board</Link>
-                <Link to="/my-posts">Show All Posts</Link>
+                {/* <Link to="/my-posts">Show All Posts</Link> */}
               </div>
               {/* <Link to="sign-out">More Options Coming Soon..!</Link> */}
               {/* <!-- edit/add new photo 'pencil' btn upon click--> */}
-              <img src="profile-avatar-user" alt="rounded potrait centered on screen" />
+              <i class="far fa-user-circle"></i>
               <section>
                 <ul>Test-User</ul>
-                {/* <!-- expand on click --> */}
+                {/* <!-- expand on click; ref using this.state.testUser.date?--> */}
                 <ul>Recent Posts</ul>
                 <ul>Current Date/Time</ul>
               </section>
@@ -36,4 +38,4 @@ const profilePage = () => {
   )
 }
 
-export default profilePage
+export default profilePage;

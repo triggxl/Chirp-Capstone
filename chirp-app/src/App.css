@@ -11,6 +11,14 @@
   border: solid 2px black;
 }
 
+a {
+  justify-content: space-between;
+}
+
+#tr-threads {
+  border: solid 2px black;
+}
+
 /* more space between columns, set margin, <tr> single column on tablet and mobile (apply to all?) */
 
 /* Media Query for Mobile Devices */
