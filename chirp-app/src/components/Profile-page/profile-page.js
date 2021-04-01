@@ -23,7 +23,7 @@ const profilePage = () => {
               </div>
               {/* <Link to="sign-out">More Options Coming Soon..!</Link> */}
               {/* <!-- edit/add new photo 'pencil' btn upon click--> */}
-              <i class="far fa-user-circle"></i>
+              <i className="far fa-user-circle"></i>
               <section>
                 <ul>Test-User</ul>
                 {/* <!-- expand on click; ref using this.state.testUser.date?--> */}

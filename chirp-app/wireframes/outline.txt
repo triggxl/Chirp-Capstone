@@ -1,15 +1,38 @@
-3/26
 Todo's: 
-[]Add functionality to Message-board
-• if user clicks on title they should be able to view messages in thread (lorem ipsum for mockup)
-• each row should be separated by a line with a box around the border of the container
-[]set up handlers tie to event to produce controlled inputs?
-[]click on thread to view (using dummy data)
-[]use media queries to make responsive
-*keep <tr> inside middle of container
 
+3/30
+
+[]Add functionality to Message-board
+Chirp:
+•onClick opens up a textbox...Title, Content sections --'Chirp' button moves to lower right to submit and add reply to message board
+Edit:
+•grab current reply to change text in input field
+•update state upon save
+•hide Chirp and Drop buttons
+•center below post
+Drop:
+•remove post onClick --> prompt("This post will be deleted" <button>okay</button> <button>cancel</button> Makes textarea go away)
+•find post by matching to postId...remove .splice()...filter() which would be easier?
+[]resize images to fit container on homepage (image carosels on home page)
+[]get feedback from Kevin and Keith
+[]make mobile friendly (<tr> 2 columns)
+not show columns...change font size...
+
+(each row should be separated by a line with a box around the border of the container)
+
+[]split up data into two columns for mobile view?
+// https://css-tricks.com/responsive-data-tables/
+[] create react biolerplate
+
+Notes:
+Steps to create a controlled (form) input:
+state variable....onChange...value={}
 
 Progress:
+[x] if user clicks on title they should be able to view messages in thread (lorem ipsum for mockup)
+[x]click on thread to view (using dummy data)
+[x]Customer feedback form
+[x]use media queries to make responsive
 [x]Separated logic into different components 
 [x]created default context
 [x]started adding state variables and added 'dummy' data in app to use with context
@@ -20,17 +43,15 @@ Progress:
 [x]utilize dummy data file for static client
 [x]set up links to route to display each page's content (in-progress)
 
+[]submit static client
+
+MVP:
 Perform build: npm run build
 Test out build: npx serve -s build
 Set up env variables: 1.) add console.log(process.env) 2.) Make temp env export REACT_APP_TEST=supersecretkey!
 3.) 
 ...https://courses.thinkful.com/react-v1/checkpoint/18
 
-[] Submit Static client
-
-
-
-MVP:
 
 {/*
 build out everthing in App.js first

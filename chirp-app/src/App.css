@@ -11,8 +11,9 @@
   border: solid 2px black;
 }
 
-a {
-  justify-content: space-between;
+#replies-section {
+  border: dotted 2px black;
+  text-align: center;
 }
 
 #tr-threads {
