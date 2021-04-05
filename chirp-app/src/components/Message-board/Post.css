@@ -1,0 +1,12 @@
+#table-row {
+  border: solid 2px black;
+}
+
+#replies-section {
+  border: dotted 2px black;
+  text-align: center;
+}
+
+#tr-threads {
+  border: solid 2px black;
+}

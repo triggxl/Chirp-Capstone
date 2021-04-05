@@ -1,11 +1,8 @@
 import React from 'react';
-import ChirpContext from '../../chirp-context/chirpContext';
+import chirpContext from '../../chirp-context/chirpContext';
 import { Link, useHistory } from 'react-router-dom';
 import './../../App.css';
 import Post from './Post';
-
-// import './message-board.css'
-
 
 class messageBoard extends React.Component {
   render() {
@@ -27,9 +24,8 @@ class messageBoard extends React.Component {
     // https://reactrouter.com/web/api/Hooks; https://stackoverflow.com/questions/51337618/reactjs-modifying-state-and-changing-url-onchange;
 
     return (
-      <ChirpContext.Consumer>
+      <chirpContext.Consumer>
         {(context) => {
-          // console.log(context.posts)
           return (
             <div id="mb-container">
               <img src="./pictures/dfkt-nkynQWagL-s-unsplash (1).jpg" alt="bird chirping on a tree branch" />
@@ -39,12 +35,6 @@ class messageBoard extends React.Component {
                 <Link to="/profile">My Profile</Link>
                 <Link to="/">Home</Link>
               </div>
-              {/* (MVP) <select name="drop-down-for-mb" id="drop-down-for-mb" onChange={e.target}>
-              <option value="my-profile" onChange={() => HandleClickToProfilePage}>My Profile</option>
-              <option value="my-posts" onChange={() => HandClickToMyPostsPage}>My Posts</option>
-              <option value="landing-page" onChange={() => HandleClickToHomePage}>Chirp Home Page</option>
-            </select> */}
-              {/* view post content, contributors */}
               <table id="mb-table">
                 <thead>
                   <tr id="table-row">
@@ -56,26 +46,26 @@ class messageBoard extends React.Component {
                 </thead>
                 {context.posts.map((post, idx) => {
                   return (
-                    // on click, expand to show posts in thread-- reply...edit...delete (MVP)
-                    // use the component
                     <Post post={post} />
                   )
                 })}
-                {/* edit */}
-                {context.posts.filter(newPost => {
-                  <>
-                    <form onSubmit={() => this.context.handleCreatePost}>
-                      <label>Chirp:</label>
-                      <text placeholder="Free as a bird...">{newPost}</text>
-                    </form>
-                  </>
-                })}
+                {/* edit (breaking code)*/}
+                {/* {context.posts.filter(newPost => {
+                  return (
+                    <>
+                      <form onSubmit={() => this.context.handleCreatePost}>
+                        <label>Chirp:</label>
+                        <text placeholder="Free as a bird...">{newPost}</text>
+                      </form>
+                    </>
+                  )
+                })} */}
               </table>
               {/* delete */}
             </div>
           )
         }}
-      </ChirpContext.Consumer>
+      </chirpContext.Consumer>
     )
   }
 }
@@ -84,3 +74,8 @@ export default messageBoard;
 
 // Create it in JSX
 // create state....method to update state
+{/* (MVP) <select name="drop-down-for-mb" id="drop-down-for-mb" onChange={e.target}>
+              <option value="my-profile" onChange={() => HandleClickToProfilePage}>My Profile</option>
+              <option value="my-posts" onChange={() => HandClickToMyPostsPage}>My Posts</option>
+              <option value="landing-page" onChange={() => HandleClickToHomePage}>Chirp Home Page</option>
+            </select> */}
