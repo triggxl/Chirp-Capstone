@@ -115,11 +115,16 @@ class App extends React.Component {
     )
   }
 
-  handleDeleteReply = (postId) => {
-    const deletedPost = this.state.posts.filter(post => post.postId !== postId)
-    this.setState({
-      posts: deletedPost
-    })
+
+  handleDeleteReply = (postId, replyId, reply, replyName) => {
+    // const deletedPost = this.state.posts.filter(post => post.postId !== postId)
+    this.setState(prevState =>
+      prevState.posts[postId - 1].replies[replyId - 1] = {
+        replyId: replyId,
+        name: replyName,
+        content: reply
+      }
+    )
   }
 
   render() {
@@ -127,6 +132,7 @@ class App extends React.Component {
       posts: this.state.posts,
       addReply: this.addReply,
       editReply: this.handleEditReply,
+      deleteReply: this.handleDeleteReply,
       handleCreatePost: this.handleCreatePost,
       handleEditPost: this.handleEditPost,
       handleDeletePost: this.handleDeletePost

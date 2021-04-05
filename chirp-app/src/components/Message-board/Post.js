@@ -28,7 +28,7 @@ class Post extends React.Component {
     }
 
     const toggleEdit = (e, replyId, replyName) => {
-      console.log(e)
+      console.log(e.target.parentElement.previousElementSibling.innerText)
       this.setState({
         // statePropety: value from function
         isEdited: true,
@@ -75,12 +75,11 @@ class Post extends React.Component {
     // delete button is being removed instead of text upon click of 'drop'
     // drop button shouldn't appear upon clicking edit
     const toggleDelete = (e, replyId, replyName) => {
-      console.log(e.target.parentElement.previousElementSibling.innerText)
       this.setState({
         // find reply that matches post && remove it
         isDeleted: true,
         replyToBeDeleted: e.target.parentElement.previousElementSibling.innerText,
-        isDeleted: !this.state.isDeleted,
+        // isDeleted: !this.state.isDeleted,
         replyIdToBeDeleted: replyId,
         replyNameToBeDeleted: replyName
       })
@@ -133,7 +132,7 @@ class Post extends React.Component {
                             <div id="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
                               {!this.state.isEdited && <button onClick={(e) => toggleEdit(e, reply.replyId, reply.name)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </button>}
-                              {!this.state.isDeleted && <button onClick={(e) => toggleDelete(e.target.parentElement.previousElementSibling.innerText, reply.replyId, reply.name)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></button>}
+                              {!this.state.isDeleted && <button onClick={(e) => toggleDelete(e, reply.replyId, reply.name)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></button>}
                             </div>
                           </>
                         )
@@ -157,11 +156,12 @@ class Post extends React.Component {
                     <tr>
                       <td>
                         {/* prompt */}
-                        {window.confirm('This post will be deleted.')}
+                        {/* {window.confirm('This post will be deleted.')} */}
+                        <button onClick={(e) => context.deleteReply(post.postId, this.state.replyIdToBeDeleted, e.target.parentNode.firstChild.value, this.state.replyNameToBeDeleted)}>Delete</button>
                       </td>
                     </tr>
                   )
-                    : !this.state.isReplying
+                    : !this.state.isDeleted
                   }
                 </> : null
               }
