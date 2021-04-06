@@ -1,5 +1,5 @@
 import React from 'react';
-import ChirpContext from '../../chirp-context/chirpContext';
+import chirpContext from '../../chirp-context/chirpContext';
 import { Link } from 'react-router-dom';
 import './profile-page.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const profilePage = () => {
 
   return (
-    <ChirpContext.Consumer>
+    <chirpContext.Consumer>
       {(context) => {
         return (
           <div id="profile-container">
@@ -34,7 +34,7 @@ const profilePage = () => {
           </div>
         )
       }}
-    </ChirpContext.Consumer>
+    </chirpContext.Consumer>
   )
 }
 

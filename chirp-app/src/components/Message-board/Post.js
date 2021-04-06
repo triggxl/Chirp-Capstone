@@ -3,6 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import chirpContext from '../../chirp-context/chirpContext';
 import './Post.css'
 
+/*
+edit
+  only drop/cancel buttons should appear once clicking edit button
+  edit/drop button should return upon clicking save
+delete
+  only delete button should appear after clicking delete + prompt
+  edit/delete button should disappear after confirming delete
+ */
+
 class Post extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +20,7 @@ class Post extends React.Component {
       isReplying: false,
       isEdited: false,
       isDeleted: false,
+      isSaved: false,
       replyToBeEdited: '',
       replyIdToBeEdited: -1,
       replyNameToBeEdited: '',
@@ -32,11 +42,117 @@ class Post extends React.Component {
       this.setState({
         // statePropety: value from function
         isEdited: true,
+        isReplying: false,
+        isDeleted: false,
         replyToBeEdited: e.target.parentElement.previousElementSibling.innerText,
         replyIdToBeEdited: replyId,
         replyNameToBeEdited: replyName
       })
     }
+
+    const toggleDelete = (e, replyId, replyName) => {
+      this.setState({
+        // find reply that matches post && remove it
+        isDeleted: true,
+        isEdited: false,
+        isReplying: false,
+        replyToBeDeleted: e.target.parentElement.previousElementSibling.innerText,
+        // isDeleted: !this.state.isDeleted,
+        replyIdToBeDeleted: replyId,
+        replyNameToBeDeleted: replyName
+      })
+    }
+
+    const toggleCancel = () => {
+      this.setState({
+        isEdited: false
+      })
+    }
+
+    const handleChirp = () => {
+      // creating ui for reply
+      this.setState({
+        isReplying: true
+      })
+    }
+
+    return (
+      <chirpContext.Consumer>
+        {context => {
+          return (
+            < tbody key={post.postId}>
+              <tr id="tr-threads">
+                <td>{post.postTitle}</td>
+                <td>{post.participantsInitials}</td>
+                <td>{post.numOfReplies}</td>
+                <td>{post.timeOpen}</td>
+                <td><button onClick={toggleThread}>⬇</button></td>
+              </tr>
+
+              {this.state.showDetails ?
+                <>
+                  <tr>
+                    <td colspan='6'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at velit eu erat dapibus molestie. Duis lorem mi, facilisis id consequat eleifend, rutrum vel dolor.
+                    <section></section>
+                      {/* stateful logic to display textarea */}
+                      {this.state.isReplying ?
+                        <><textarea></textarea> <button onClick={(e) => { context.addReply(post.postId, e.target.previousElementSibling.value); }}>Save</button></> :
+                        // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
+                        <button onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></button>}
+                    </td>
+                  </tr>
+                  <tr id="replies-section" key={post.replies.name}>
+                    <td>
+                      {post.replies.map(reply => {
+                        return (
+                          <>
+                            <section>{reply.content}</section>
+                            <div id="thread-btns">
+                              {/* document.getElementById = previousElementSibling */}
+                              {!this.state.isEdited && <button onClick={(e) => toggleEdit(e, reply.replyId, reply.name)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </button>}
+                              {!this.state.isDeleted && <button onClick={(e) => toggleDelete(e, reply.replyId, reply.name)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></button>}
+                            </div>
+                          </>
+                        )
+                      })}
+                    </td>
+                  </tr>
+                  {/* edit figure out how to replace a reply with the text area that you're conditionally rendering */}
+                  {this.state.isEdited ? (
+                    <tr>
+                      <td>
+                        {/* siblings are vertical */}
+                        <textarea>{this.state.replyToBeEdited}</textarea>
+                        <button onClick={toggleCancel}>Cancel</button>
+                        <button onClick={(e) => context.editReply(post.postId, this.state.replyIdToBeEdited, e.target.parentNode.firstChild.value, this.state.replyNameToBeEdited, !this.state.isSaved)}>Save</button> {/* saves updated post, changes state variable from true to false */}
+                      </td>
+                    </tr>
+                  ) : null
+                  }
+                  {/* delete */}
+                  {this.state.isDeleted ? (
+                    <tr>
+                      <td>
+                        {/* prompt */}
+                        <button onClick={(e) => context.deleteReply(post.postId, this.state.replyIdToBeDeleted, e.target.parentNode.firstChild.value, this.state.replyNameToBeDeleted)}>Delete</button>
+                      </td>
+                    </tr>
+                  )
+                    : !this.state.isDeleted
+                  }
+                </> : null
+              }
+            </tbody>
+          )
+        }}
+      </chirpContext.Consumer>
+    )
+  }
+}
+
+export default Post;
+
+
 
     // handling logic for updating reply (moved functionalty over to app and then called editReply fx within Post)
     // const handleSave = (e) => {
@@ -74,103 +190,3 @@ class Post extends React.Component {
     // textarea should close and new text should render 
     // delete button is being removed instead of text upon click of 'drop'
     // drop button shouldn't appear upon clicking edit
-    const toggleDelete = (e, replyId, replyName) => {
-      this.setState({
-        // find reply that matches post && remove it
-        isDeleted: true,
-        replyToBeDeleted: e.target.parentElement.previousElementSibling.innerText,
-        // isDeleted: !this.state.isDeleted,
-        replyIdToBeDeleted: replyId,
-        replyNameToBeDeleted: replyName
-      })
-    }
-
-    const toggleCancel = () => {
-      this.setState({
-        isEdited: false
-      })
-    }
-
-    const handleChirp = () => {
-      // creating ui for reply
-      this.setState({
-        isReplying: true
-      })
-    }
-
-    return (
-      <chirpContext.Consumer>
-        {context => {
-          return (
-            < tbody key={post.postId}>
-              <tr id="tr-threads">
-                <td>{post.postTitle}</td>
-                <td>{post.participantsIntials}</td>
-                <td>{post.numOfReplies}</td>
-                <td>{post.timeOpen}</td>
-                <td><button onClick={toggleThread}>⬇</button></td>
-              </tr>
-
-              {this.state.showDetails ?
-                <>
-                  <tr>
-                    <td colspan='6'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at velit eu erat dapibus molestie. Duis lorem mi, facilisis id consequat eleifend, rutrum vel dolor.
-                    <section></section>
-                      {/* add stateful logic to display textarea */}
-                      {this.state.isReplying ?
-                        <><textarea></textarea> <button onClick={(e) => { context.addReply(post.postId, e.target.previousElementSibling.value); }}>Save</button></> :
-                        // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                        <button onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></button>}
-                    </td>
-                  </tr>
-                  <tr id="replies-section" key={post.replies.name}>
-                    <td>
-                      {post.replies.map(reply => {
-                        return (
-                          <>
-                            <section>{reply.content}</section>
-                            <div id="thread-btns">
-                              {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <button onClick={(e) => toggleEdit(e, reply.replyId, reply.name)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </button>}
-                              {!this.state.isDeleted && <button onClick={(e) => toggleDelete(e, reply.replyId, reply.name)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></button>}
-                            </div>
-                          </>
-                        )
-                      })}
-                    </td>
-                  </tr>
-                  {/* edit figure out how to replace a reply with the text area that you're conditionally rendering */}
-                  {this.state.isEdited ? (
-                    <tr>
-                      <td>
-                        {/* siblings are vertical */}
-                        <textarea>{this.state.replyToBeEdited}</textarea>
-                        <button onClick={toggleCancel}>Cancel</button>
-                        <button onClick={(e) => context.editReply(post.postId, this.state.replyIdToBeEdited, e.target.parentNode.firstChild.value, this.state.replyNameToBeEdited)}>Save</button> {/* saves updated post, changes state variable from true to false */}
-                      </td>
-                    </tr>
-                  ) : null
-                  }
-                  {/* delete */}
-                  {this.state.isDeleted ? (
-                    <tr>
-                      <td>
-                        {/* prompt */}
-                        {/* {window.confirm('This post will be deleted.')} */}
-                        <button onClick={(e) => context.deleteReply(post.postId, this.state.replyIdToBeDeleted, e.target.parentNode.firstChild.value, this.state.replyNameToBeDeleted)}>Delete</button>
-                      </td>
-                    </tr>
-                  )
-                    : !this.state.isDeleted
-                  }
-                </> : null
-              }
-            </tbody>
-          )
-        }}
-      </chirpContext.Consumer>
-    )
-  }
-}
-
-export default Post

@@ -5,21 +5,15 @@ import messageBoard from './components/Message-board/message-board';
 import profilePage from './components/Profile-page/profile-page';
 import chirpContext from './chirp-context/chirpContext';
 import './App.css';
-
+// check relative paths
 class App extends React.Component {
   static contextType = chirpContext;
   state = {
-    // showThread: false,
-    // createNewThread: [{
-    //   mbTitle: '',
-    //   content: '',
-    //   isPosted: false
-    // }],
     posts: [
       {
         postId: 1,
         postTitle: 'Best Editor EVER!',
-        participantsIntials: 'M, K',
+        participantsInitials: 'M, K',
         numOfParticipants: 2,
         numOfReplies: 27,
         replies: [{
@@ -32,7 +26,7 @@ class App extends React.Component {
       {
         postId: 2,
         postTitle: '26 Days of X-mas?!',
-        participantsIntials: 'M, K, T, L',
+        participantsInitials: 'M, K, T, L',
         numOfParticipants: 4,
         numOfReplies: 175,
         replies: [{
@@ -45,7 +39,7 @@ class App extends React.Component {
       {
         postId: 3,
         postTitle: 'Top Specialities in Tech',
-        participantsIntials: 'K, M, L, S, S.A',
+        participantsInitials: 'K, M, L, S, S.A',
         numOfParticipants: 5,
         numOfReplies: 67,
         replies: [{
@@ -58,7 +52,7 @@ class App extends React.Component {
       {
         postId: 4,
         postTitle: 'My First Project EVER! (Share and Discuss)',
-        participantsIntials: 'M, K, A, B, T, D, L',
+        participantsInitials: 'M, K, A, B, T, D, L',
         numOfParticipants: 7,
         numOfReplies: 184,
         replies: [{
@@ -71,7 +65,7 @@ class App extends React.Component {
       {
         postId: 5,
         postTitle: 'AMA Forum',
-        participantsIntials: 'M, K, D, B, S',
+        participantsInitials: 'M, K, D, B, S',
         numOfParticipants: 5,
         numOfReplies: 12,
         replies: [
@@ -101,7 +95,6 @@ class App extends React.Component {
       })
       return prevState
     })
-    // how to replace the matchingPost with the post you just created, how to replace the information creating an object that mimics my replies object. need to create an id to push it to your state
   }
 
   handleEditReply = (postId, replyId, reply, replyName) => {

@@ -40,7 +40,8 @@ How do we allow the user to write a reply?
         put reply in replies property of posts object
           add reply to array using .push()
 ------------------------------------------------------------------------------------------------------------------
-[x]Edit reply:
+[]Edit reply:
+*Edit box should close after clicking save
 How do we allow the user to edit their reply?
 (UX)clicking on Edit button highlights their reply in the textarea
   (Dev) fires an event that targets the textarea

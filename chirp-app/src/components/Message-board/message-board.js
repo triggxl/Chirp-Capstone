@@ -1,8 +1,9 @@
 import React from 'react';
 import chirpContext from '../../chirp-context/chirpContext';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './../../App.css';
 import Post from './Post';
+import Pictures from '../Pictures'
 
 class messageBoard extends React.Component {
   render() {
@@ -28,7 +29,7 @@ class messageBoard extends React.Component {
         {(context) => {
           return (
             <div id="mb-container">
-              <img src="./pictures/dfkt-nkynQWagL-s-unsplash (1).jpg" alt="bird chirping on a tree branch" />
+              <img src={Pictures.ChirpingBird} alt="bird chirping on a tree branch" />
               <h1 id="mb-page-title">Chirp(En-Passant) Message Board:</h1>
               <img src="search-bar-icon" alt="search bar icon for message board" />
               <div id="mb-links">
@@ -49,17 +50,6 @@ class messageBoard extends React.Component {
                     <Post post={post} />
                   )
                 })}
-                {/* edit (breaking code)*/}
-                {/* {context.posts.filter(newPost => {
-                  return (
-                    <>
-                      <form onSubmit={() => this.context.handleCreatePost}>
-                        <label>Chirp:</label>
-                        <text placeholder="Free as a bird...">{newPost}</text>
-                      </form>
-                    </>
-                  )
-                })} */}
               </table>
               {/* delete */}
             </div>
@@ -75,7 +65,7 @@ export default messageBoard;
 // Create it in JSX
 // create state....method to update state
 {/* (MVP) <select name="drop-down-for-mb" id="drop-down-for-mb" onChange={e.target}>
-              <option value="my-profile" onChange={() => HandleClickToProfilePage}>My Profile</option>
-              <option value="my-posts" onChange={() => HandClickToMyPostsPage}>My Posts</option>
-              <option value="landing-page" onChange={() => HandleClickToHomePage}>Chirp Home Page</option>
-            </select> */}
+<option value="my-profile" onChange={() => HandleClickToProfilePage}>My Profile</option>
+<option value="my-posts" onChange={() => HandClickToMyPostsPage}>My Posts</option>
+<option value="landing-page" onChange={() => HandleClickToHomePage}>Chirp Home Page</option>
+</select> */}
