@@ -1,51 +1,57 @@
 import React from 'react';
 import chirpContext from '../../chirp-context/chirpContext';
 import { Link } from 'react-router-dom';
+// import ChirpingBird from '../pictures/chirping-bird.jpg'
+import CoffeeExpresso from '../pictures/coffee-expresso.jpg'
+import ColorfulParrots from '../pictures/colorful-parrots.jpg'
+import OldTelephone from '../pictures/old-telephones.jpg'
+import Typewriter from '../pictures/typerwriter.jpg'
+import SiteButton from '../site-button'
 import './landing-page.css';
-import Pictures from '../Pictures'
 
-/*
-images:
-images need to appear
-images need to fit within container
-change className to match App.css selectors
- */
+
+
+// edited text should only appear once with text-box around it
+// delete should bring up prompt, button should disappear, and reply should be removed upon confirmation ||  
+// style all buttons using separate component
+/* 
+resize expresso photo/ all photos to take up width of container, 
+start with 1st image on load and then transition after 3-4 sec
+*/
+// separate post, reply in some manner
+
 
 const landingPage = () => {
-  // create array of image
   return (
     <chirpContext.Consumer>
       {(context) => {
         return (
           <div id="landing-page-container">
-            <div class="container">
+            <div className="container">
               <div id="content-slider">
                 <div id="slider">
                   <div id="mask">
-                    <ul>
-                      <img className="image-top" src={Pictures.ChirpingBird} alt="Old typewriter" />
-                      <img className="image-top" src={Pictures.CoffeeExpresso} alt="Circular table with cups containing different shades of expresso" />
-                    </ul>
+                    <img className="parrots" src={ColorfulParrots} alt="vivid parrots up close in the wild" />
+                    <img className="rotary" src={OldTelephone} alt="three old rotary phones lined up against a wall" />
                   </div>
-                  <div class="progress-bar"></div>
+                  <div className="progress-bar"></div>
                 </div>
               </div>
             </div>
             <h1 id="site-title">Welcome to Chirp-(En-Passant)!</h1>
-            <p>(An online discussion board)</p>
-            <Link to="/message-board"><button>Let's Get Started!</button></Link>
+            <h2>(An online discussion board)</h2>
+            {/* style button to match carosel || have a className="siteButton" */}
+            <Link to="/message-board"><SiteButton style={{ fontSize: ".9em" }}>Let's Get Started!</SiteButton></Link>
             <br />
             <div id="content-slider">
               <div id="slider">
                 <div id="mask">
-                  <ul>
-                    <img className="image-btm" src={Pictures.ColorfulParrots} alt="vivid parrots up close in the wild" />
-                    <img className="image-btm" src={Pictures.OldTelephone} alt="three old rotary phones lined up against a wall" />                    </ul>
+                  <img className="expresso" src={CoffeeExpresso} alt="Circular table with cups containing different shades of expresso" />
+                  <img className="typewriter" src={Typewriter} alt="Old typewriter" />
                 </div>
-                <div class="progress-bar"></div>
+                <div className="progress-bar"></div>
               </div>
             </div>
-
           </div>
         )
       }}

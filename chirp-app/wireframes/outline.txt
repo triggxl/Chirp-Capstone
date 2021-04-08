@@ -7,7 +7,27 @@ How do I use the information?
 "I've developed a plan for the feature I want to produce, can you walk through it with me to make sure it makes sense?"
 --------------------------------------------------------------------------------------------------
 
+4/6
 
+*Let people pick their username when they create a post and then return that username
+
+node.js...express...testing suites...Vercel...API endpoints to remember data
+
+Database concepts:
+NoSQL...PostgresSQL...Migrations...knex...Heroku
+
+Steps to build a server:
+1.) find where data changes occur within client where data needs to stay
+  make, edit, delete reply (where are all your fetches going to be)
+2.) establish API endpoints + Express Router
+  App.get App.post etc
+  one API for everthing you need to remember 
+3.) create DB + create migrations to create tables
+4.) make service functions for APIs to remember information in the Database
+ex: CreateReply-Service-Function
+5.) write tests to make sure everything works
+
+(TDD is optimal)
 
 Todo's: 
 Add functionality to Message-board

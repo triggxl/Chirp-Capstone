@@ -1,7 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import chirpContext from '../../chirp-context/chirpContext';
-import './Post.css'
+import './Post.css';
+import SiteButton from '../site-button';
+
 
 /*
 edit
@@ -21,11 +23,9 @@ class Post extends React.Component {
       isEdited: false,
       isDeleted: false,
       isSaved: false,
-      replyToBeEdited: '',
-      replyIdToBeEdited: -1,
-      replyNameToBeEdited: '',
-      replyIdToBeDeleted: -1,
-      replyNameToBeDeleted: ''
+      // replyToBeEdited: '',
+      // replyIdToBeEdited: -1,
+      // replyNameToBeEdited: '',
     }
   }
   render() {
@@ -38,7 +38,7 @@ class Post extends React.Component {
     }
 
     const toggleEdit = (e, replyId, replyName) => {
-      console.log(e.target.parentElement.previousElementSibling.innerText)
+      // console.log(e.target.parentElement.previousElementSibling.innerText)
       this.setState({
         // statePropety: value from function
         isEdited: true,
@@ -50,17 +50,16 @@ class Post extends React.Component {
       })
     }
 
-    const toggleDelete = (e, replyId, replyName) => {
+    const buildToggleDelete = (context, replyId) => (e) => {
+      if (!window.confirm('This reply will be deleted.')) return
       this.setState({
         // find reply that matches post && remove it
         isDeleted: true,
         isEdited: false,
         isReplying: false,
-        replyToBeDeleted: e.target.parentElement.previousElementSibling.innerText,
-        // isDeleted: !this.state.isDeleted,
-        replyIdToBeDeleted: replyId,
-        replyNameToBeDeleted: replyName
       })
+      context.deleteReply(post.postId, replyId)
+
     }
 
     const toggleCancel = () => {
@@ -76,6 +75,23 @@ class Post extends React.Component {
       })
     }
 
+    const buildHandleSave = context => (e) => {
+      context.addReply(post.postId, e.target.previousElementSibling.value);
+      this.setState({ isReplying: false })
+    }
+
+    const buildHandleSaveOnEdit = context => (e) => {
+      context.editReply(post.postId, this.state.replyIdToBeEdited, this.state.replyToBeEdited, this.state.replyNameToBeEdited)
+      this.setState({ isEdited: false })
+    }
+
+    const handleTextareaEdit = (e) => {
+      this.setState({ replyToBeEdited: e.target.value })
+    }
+
+    // 4/6
+    // make onChange handler and value (text area to update state that's being used to set the textarea) && also a controlled input for deleting so you don't have to reference the DOM
+
     return (
       <chirpContext.Consumer>
         {context => {
@@ -85,32 +101,38 @@ class Post extends React.Component {
                 <td>{post.postTitle}</td>
                 <td>{post.participantsInitials}</td>
                 <td>{post.numOfReplies}</td>
-                <td>{post.timeOpen}</td>
+                <td className="time-open-column">{post.timeOpen}</td>
                 <td><button onClick={toggleThread}>⬇</button></td>
               </tr>
 
               {this.state.showDetails ?
                 <>
                   <tr>
-                    <td colspan='6'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at velit eu erat dapibus molestie. Duis lorem mi, facilisis id consequat eleifend, rutrum vel dolor.
+                    <td colspan={6}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at velit eu erat dapibus molestie. Duis lorem mi, facilisis id consequat eleifend, rutrum vel dolor.
                     <section></section>
                       {/* stateful logic to display textarea */}
                       {this.state.isReplying ?
-                        <><textarea></textarea> <button onClick={(e) => { context.addReply(post.postId, e.target.previousElementSibling.value); }}>Save</button></> :
+                        <>
+                          <textarea></textarea>
+                          <SiteButton onClick={buildHandleSave(context)}>Save</SiteButton>
+                        </> :
                         // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                        <button onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></button>}
+                        <SiteButton onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
+                      }
                     </td>
                   </tr>
-                  <tr id="replies-section" key={post.replies.name}>
-                    <td>
+                  <tr className="replies-section" key={post.replies.name}>
+                    <td colspan={6}>
                       {post.replies.map(reply => {
                         return (
                           <>
-                            <section>{reply.content}</section>
-                            <div id="thread-btns">
+                            {!this.state.isEdited &&
+                              <section className="reply-section">{reply.content}</section>
+                            }
+                            <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <button onClick={(e) => toggleEdit(e, reply.replyId, reply.name)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </button>}
-                              {!this.state.isDeleted && <button onClick={(e) => toggleDelete(e, reply.replyId, reply.name)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></button>}
+                              {!this.state.isEdited && <SiteButton onClick={(e) => toggleEdit(e, reply.replyId, reply.name)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
+                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={buildToggleDelete(context, reply.replyId)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
                             </div>
                           </>
                         )
@@ -120,32 +142,25 @@ class Post extends React.Component {
                   {/* edit figure out how to replace a reply with the text area that you're conditionally rendering */}
                   {this.state.isEdited ? (
                     <tr>
-                      <td>
+                      <td colspan={6}>
                         {/* siblings are vertical */}
-                        <textarea>{this.state.replyToBeEdited}</textarea>
-                        <button onClick={toggleCancel}>Cancel</button>
-                        <button onClick={(e) => context.editReply(post.postId, this.state.replyIdToBeEdited, e.target.parentNode.firstChild.value, this.state.replyNameToBeEdited, !this.state.isSaved)}>Save</button> {/* saves updated post, changes state variable from true to false */}
+                        <textarea value={this.state.replyToBeEdited} onChange={handleTextareaEdit} />
+                        <div>
+                          <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
+                          <SiteButton onClick={buildHandleSaveOnEdit(context)}>Save</SiteButton> {/* saves updated post, changes state variable from true to false */}
+                        </div>
                       </td>
                     </tr>
                   ) : null
                   }
                   {/* delete */}
-                  {this.state.isDeleted ? (
-                    <tr>
-                      <td>
-                        {/* prompt */}
-                        <button onClick={(e) => context.deleteReply(post.postId, this.state.replyIdToBeDeleted, e.target.parentNode.firstChild.value, this.state.replyNameToBeDeleted)}>Delete</button>
-                      </td>
-                    </tr>
-                  )
-                    : !this.state.isDeleted
-                  }
                 </> : null
               }
             </tbody>
           )
-        }}
-      </chirpContext.Consumer>
+        }
+        }
+      </chirpContext.Consumer >
     )
   }
 }

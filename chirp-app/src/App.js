@@ -85,9 +85,19 @@ class App extends React.Component {
     ]
   }
 
+  createNewPost = (postTitle, postContent) => {
+    const newPost = this.setState({
+      //  use UUID pass UUID --> would include in .then(setState({...UUID})) to give to server
+      postId: Math.random(),
+      postTitle: postTitle,
+      postContent: postContent
+    })
+    return newPost
+  }
+
   addReply = (postId, reply) => {
     this.setState((prevState) => {
-      // setting information: finds the post with matching id goes into that post's reply and adds a reply object with the content being the reply because it's structured as an array of object
+      // finds the post with matching id goes into that post's reply, reconstructing new object within array to account for other properties reply has
       let matchingPost = prevState.posts.find(post => post.postId === postId)
       prevState.posts[postId - 1].replies.push({
         content: reply,
@@ -109,20 +119,20 @@ class App extends React.Component {
   }
 
 
-  handleDeleteReply = (postId, replyId, reply, replyName) => {
+  handleDeleteReply = (postId, replyId) => {
     // const deletedPost = this.state.posts.filter(post => post.postId !== postId)
-    this.setState(prevState =>
-      prevState.posts[postId - 1].replies[replyId - 1] = {
-        replyId: replyId,
-        name: replyName,
-        content: reply
-      }
+    this.setState(prevState => {
+      delete prevState.posts[postId - 1].replies[replyId - 1]
+      console.log(prevState, postId - 1, replyId - 1)
+      return prevState
+    }
     )
   }
 
   render() {
     const contextValue = {
       posts: this.state.posts,
+      createNewPost: this.createNewPost,
       addReply: this.addReply,
       editReply: this.handleEditReply,
       deleteReply: this.handleDeleteReply,
@@ -145,3 +155,38 @@ class App extends React.Component {
 export default App;
 
 
+/*
+4/7
+
+commit after completing each feature
+
+(MVP)
+I was wondering if you could help me outline the steps to:
+[] 'createPost' component
+  make createPost button
+  make route tag for /createPost
+  make your createPost component && showAddForm
+  fill in JSX
+    form
+    controlled inputs
+    formSubmit handler uses fx in app for submitHanlder to call (through context)
+
+[] give ability to log in as different users
+
+events issues:
+  [x]reply isn't appearing upon save
+  [x]edit/delete: TypeError: Cannot read property 'innerText' of null
+[x]not seeing styling for button in site-button component
+want to hide openSince column with smaller screen sizes
+
+Node Js Interview next Monday
+  // express: handle all routes, make router, make middleware,
+  // knex how to make tables, alter, make foreign keys
+
+
+Thinkful Sessions:
+  package-lock.json: keep all my files locked at this version
+  process.env says run my environmental variable on whatever server I'm on
+  vercel --prod skips preview step and deploys in one step
+  how to use gitHub pages
+*/

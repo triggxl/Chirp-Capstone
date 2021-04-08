@@ -3,10 +3,39 @@
     margin: 0, 20%;
   }
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 637) {
   #mb-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1em;
+    /* hide columns __, __ */
   }
+/* trying to hide openSince column */
+  .open-since-column {
+    display: none; 
+  }
+  /* table#mb-table td > th-child(5) {
+    https://stackoverflow.com/questions/20090764/css-for-hiding-multiple-columns-in-a-table
+} */
+}
+
+
+#mb-links {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 1.5em;
+}
+
+#mb-table {
+  margin-left: 50px;
+  /* display: block;
+  border: 4px solid green;
+  border-radius: 5px;
+  text-align: center; */
+}
+
+img {
+  width: 75%;
+  height: 48vh;
+  margin-top: 10px;
 }
