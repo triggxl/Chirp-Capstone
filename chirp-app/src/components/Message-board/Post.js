@@ -50,16 +50,8 @@ class Post extends React.Component {
       })
     }
 
-    const buildToggleDelete = (context, replyId) => (e) => {
-      if (!window.confirm('This reply will be deleted.')) return
-      this.setState({
-        // find reply that matches post && remove it
-        isDeleted: true,
-        isEdited: false,
-        isReplying: false,
-      })
-      context.deleteReply(post.postId, replyId)
-
+    const handleTextareaEdit = (e) => {
+      this.setState({ replyToBeEdited: e.target.value })
     }
 
     const toggleCancel = () => {
@@ -75,6 +67,18 @@ class Post extends React.Component {
       })
     }
 
+    const buildToggleDelete = (context, replyId) => (e) => {
+      if (!window.confirm('This reply will be deleted.')) return
+      this.setState({
+        // find reply that matches post && remove it
+        isDeleted: true,
+        isEdited: false,
+        isReplying: false,
+      })
+      context.deleteReply(post.postId, replyId)
+
+    }
+
     const buildHandleSave = context => (e) => {
       context.addReply(post.postId, e.target.previousElementSibling.value);
       this.setState({ isReplying: false })
@@ -85,12 +89,6 @@ class Post extends React.Component {
       this.setState({ isEdited: false })
     }
 
-    const handleTextareaEdit = (e) => {
-      this.setState({ replyToBeEdited: e.target.value })
-    }
-
-    // 4/6
-    // make onChange handler and value (text area to update state that's being used to set the textarea) && also a controlled input for deleting so you don't have to reference the DOM
 
     return (
       <chirpContext.Consumer>

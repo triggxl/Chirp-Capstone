@@ -30,10 +30,12 @@ class messageBoard extends React.Component {
     // }
     // https://reactrouter.com/web/api/Hooks; https://stackoverflow.com/questions/51337618/reactjs-modifying-state-and-changing-url-onchange;
 
-    const showAddForm = () => {
+    const handleShowAddForm = () => {
       this.setState({ showAddForm: true })
     }
-    const handleSubmitForm = context => (post) => {
+
+    const buildHandleSubmitForm = context => (e, post) => {
+      e.prevent.default();
       context.createNewPost(post.postId, this.state.postTitle, this.state.postContent)
       this.setState({
         isCreatingPost: true
@@ -52,20 +54,31 @@ class messageBoard extends React.Component {
                 <Link to="/" key={'/'}>Home</Link>
                 <Link to="/profile" key={'/profile'}>My Profile</Link>
               </div>
-              <form className="form-inline" onSubmit={handleSubmitForm(context)}>
-                <label className="ptl">Post Title:</label>
-                <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" value="New ish" />
-                <label className="pcl">Topic:</label>
-                <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" value="down 4 and 7 beers ago..." />
-              </form>
-              {showAddForm ? <SiteButton onClick={showAddForm}>Create New Post</SiteButton> : null}
+              {/* 
+              desired outcome: when 'Create New Post' is clicked show form, input desired text, close up submit and display new Post
+              currently: clicking 'Create New Post' renders input fields (text can't be modified) and clicking 'Chirp' only re-renders page  
+               */}
+              {!this.state.showAddForm ?
+                <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton> :
+                <>
+                  <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
+                    <label className="ptl">Post Title:</label>
+                    {/* eslint-disable-next-line */}
+                    <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" value="New ish" />
+                    <label className="pcl">Topic:</label>
+                    {/* eslint-disable-next-line */}
+                    <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" value="down 4 and 7 beers ago..." />
+                    <SiteButton type="submit">Chirp!</SiteButton>
+                  </form>
+                </>
+              }
               <table id="mb-table">
                 <thead>
                   <tr id="table-row">
                     <th>Title</th>
                     <th>Participants</th>
                     <th># of Messages in Thread</th>
-                    <th className="open-since-column">Open Since</th>
+                    <th className="open-since-column" >Open Since</th>
                   </tr>
                 </thead>
                 {context.posts.map((post, idx) => {
@@ -85,6 +98,9 @@ class messageBoard extends React.Component {
 
 export default messageBoard;
 
+
+/*
+ */
 // Create it in JSX
 // create state....method to update state
 /* (MVP) <select name="drop-down-for-mb" id="drop-down-for-mb" onChange={e.target}>
