@@ -56,18 +56,18 @@ class messageBoard extends React.Component {
               </div>
               {/* 
               desired outcome: when 'Create New Post' is clicked show form, input desired text, close up submit and display new Post
-              currently: clicking 'Create New Post' renders input fields (text can't be modified) and clicking 'Chirp' only re-renders page  
+              currently: clicking 'Create New Post' renders input fields (text can't be modified) and clicking 'Chirp' only re-renders page
                */}
               {!this.state.showAddForm ?
                 <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton> :
                 <>
                   <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
-                    <label className="ptl">Post Title:</label>
+                    <label className="ptl">Title:</label>
                     {/* eslint-disable-next-line */}
-                    <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" value="New ish" />
+                    <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" defaultValue="New ish" />
                     <label className="pcl">Topic:</label>
                     {/* eslint-disable-next-line */}
-                    <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" value="down 4 and 7 beers ago..." />
+                    <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" defaultValue="down 4 and 7 beers ago..." />
                     <SiteButton type="submit">Chirp!</SiteButton>
                   </form>
                 </>
