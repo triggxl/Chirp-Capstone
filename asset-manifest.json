@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Chirp-Capstone/static/css/main.7758d0c4.chunk.css",
+    "main.js": "/Chirp-Capstone/static/js/main.d58bb986.chunk.js",
+    "main.js.map": "/Chirp-Capstone/static/js/main.d58bb986.chunk.js.map",
+    "runtime-main.js": "/Chirp-Capstone/static/js/runtime-main.be1490a6.js",
+    "runtime-main.js.map": "/Chirp-Capstone/static/js/runtime-main.be1490a6.js.map",
+    "static/js/2.e24fcf63.chunk.js": "/Chirp-Capstone/static/js/2.e24fcf63.chunk.js",
+    "static/js/2.e24fcf63.chunk.js.map": "/Chirp-Capstone/static/js/2.e24fcf63.chunk.js.map",
+    "index.html": "/Chirp-Capstone/index.html",
+    "static/css/main.7758d0c4.chunk.css.map": "/Chirp-Capstone/static/css/main.7758d0c4.chunk.css.map",
+    "static/js/2.e24fcf63.chunk.js.LICENSE.txt": "/Chirp-Capstone/static/js/2.e24fcf63.chunk.js.LICENSE.txt",
+    "static/media/chirping-bird.d38cb81b.jpg": "/Chirp-Capstone/static/media/chirping-bird.d38cb81b.jpg",
+    "static/media/coffee-expresso.31fb8635.jpg": "/Chirp-Capstone/static/media/coffee-expresso.31fb8635.jpg",
+    "static/media/colorful-parrots.711a6a95.jpg": "/Chirp-Capstone/static/media/colorful-parrots.711a6a95.jpg",
+    "static/media/old-telephones.36d67495.jpg": "/Chirp-Capstone/static/media/old-telephones.36d67495.jpg",
+    "static/media/typerwriter.81be67e0.jpg": "/Chirp-Capstone/static/media/typerwriter.81be67e0.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.be1490a6.js",
+    "static/js/2.e24fcf63.chunk.js",
+    "static/css/main.7758d0c4.chunk.css",
+    "static/js/main.d58bb986.chunk.js"
+  ]
+}
