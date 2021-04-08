@@ -56,7 +56,7 @@ class messageBoard extends React.Component {
               </div>
               {/* 
               desired outcome: when 'Create New Post' is clicked show form, input desired text, close up submit and display new Post
-              currently: clicking 'Create New Post' renders input fields and clicking 'Chirp!' only re-renders page
+              currently: clicking 'Create New Post' renders input fields and clicking 'Chirp!' (submit) only re-renders page
                */}
               {!this.state.showAddForm ?
                 <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton> :
