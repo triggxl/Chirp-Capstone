@@ -25,8 +25,8 @@
   margin-bottom: 20px;
 }
 
-#new-post-title, #new-post-content {
-  margin-right: 5px;
+#new-post-title, #post-content, #new-post-content {
+  margin-right: 10px;
 }
 
 #mb-table {

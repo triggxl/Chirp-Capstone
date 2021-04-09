@@ -8,27 +8,16 @@ import SiteButton from '../site-button';
 
 
 class messageBoard extends React.Component {
-  state = {
-    isCreatingPost: false,
-    showAddForm: false
+  constructor(props) {
+    super(props);
+    this.state = {
+      isCreatingPost: false,
+      showAddForm: false
+    }
   }
+
   render() {
-    // (useHistory hook for MVP) state = {
-    //   selected: ''
-    // }
-    // function HandleClickToProfilePage(e) {
-    //   let history = useHistory(e.target);
-    //   history.push('/profile');
-    // }
-    // function HandClickToMyPostsPage(e) {
-    //   let history = useHistory(e.target);
-    //   history.push('/my-posts')
-    // }
-    // function HandleClickToHomePage(e) {
-    //   let history = useHistory(e.target);
-    //   history.push('/');
-    // }
-    // https://reactrouter.com/web/api/Hooks; https://stackoverflow.com/questions/51337618/reactjs-modifying-state-and-changing-url-onchange;
+    const { post } = this.props;
 
     const handleShowAddForm = () => {
       this.setState({ showAddForm: true })
@@ -38,6 +27,8 @@ class messageBoard extends React.Component {
       e.prevent.default();
       context.createNewPost(post.postId, this.state.postTitle, this.state.postContent)
       this.setState({
+        // newPostTitle: this.state.postTitle,
+        // newPostContent: this.state.postContent,
         isCreatingPost: true
       })
     }
@@ -55,8 +46,9 @@ class messageBoard extends React.Component {
                 <Link to="/profile" key={'/profile'}>My Profile</Link>
               </div>
               {/* 
+              (Will finish devloping lines 60-72 in MVP)
               desired outcome: when 'Create New Post' is clicked show form, input desired text, close up submit and display new Post
-              currently: clicking 'Create New Post' renders input fields and clicking 'Chirp!' (submit) only re-renders page
+              currently: clicking 'Create New Post' renders input fields -- clicking 'Chirp!' (submit) only re-renders page
                */}
               {!this.state.showAddForm ?
                 <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton> :
@@ -64,11 +56,11 @@ class messageBoard extends React.Component {
                   <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
                     <label className="ptl">Title:</label>
                     {/* eslint-disable-next-line */}
-                    <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" defaultValue="New ish" />
+                    <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" placeholder="New ish" />
                     <label className="pcl">Topic:</label>
                     {/* eslint-disable-next-line */}
-                    <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" defaultValue="down 4 and 7 beers ago..." />
-                    <SiteButton type="submit">Chirp!</SiteButton>
+                    <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
+                    <SiteButton type="on-submit">Chirp!</SiteButton>
                   </form>
                 </>
               }
@@ -107,4 +99,30 @@ export default messageBoard;
 <option value="my-profile" onChange={() => HandleClickToProfilePage}>My Profile</option>
 <option value="my-posts" onChange={() => HandClickToMyPostsPage}>My Posts</option>
 <option value="landing-page" onChange={() => HandleClickToHomePage}>Chirp Home Page</option>
-</select> */
+</select>
+
+// (useHistory hook for MVP) state = {
+    //   selected: ''
+    // }
+    // function HandleClickToProfilePage(e) {
+    //   let history = useHistory(e.target);
+    //   history.push('/profile');
+    // }
+    // function HandClickToMyPostsPage(e) {
+    //   let history = useHistory(e.target);
+    //   history.push('/my-posts')
+    // }
+    // function HandleClickToHomePage(e) {
+    //   let history = useHistory(e.target);
+    //   history.push('/');
+    // }
+    // https://reactrouter.com/web/api/Hooks; https://stackoverflow.com/questions/51337618/reactjs-modifying-state-and-changing-url-onchange;
+
+// figured I need to make a build fx to grab the values on submit (Chirp);
+    // console logging to see output to make sure it's the correct element
+    // const buildNewPostOnChirp = (e) => {
+    //   this.setState({
+    //   })
+    // }
+
+*/
