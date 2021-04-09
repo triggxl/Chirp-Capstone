@@ -51,7 +51,14 @@ class messageBoard extends React.Component {
               currently: clicking 'Create New Post' renders input fields -- clicking 'Chirp!' (submit) only re-renders page
                */}
               {!this.state.showAddForm ?
-                <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton> :
+                <div>
+                  <div id="user-instructions">
+                    <header>Directions:</header>
+                    <p>1.) Click one of the arrows to the right to view a post</p>
+                    <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!- Content will be added instead 'default' posts in next release.) </p>
+                  </div>
+                  <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton>
+                </div> :
                 <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
                   {/* eslint-disable-next-line */}
                   <label className="ptl">Title:</label>
