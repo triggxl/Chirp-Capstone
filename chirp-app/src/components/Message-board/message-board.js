@@ -55,7 +55,7 @@ class messageBoard extends React.Component {
                   <div id="user-instructions">
                     <header>Directions:</header>
                     <p>1.) Click one of the arrows to the right to view a post</p>
-                    <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!- Content will be added instead 'default' posts in next release.) </p>
+                    <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!- Actual content will be added instead of 'default' posts in next release.) </p>
                   </div>
                   <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton>
                 </div> :
