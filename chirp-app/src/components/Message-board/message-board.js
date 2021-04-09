@@ -17,7 +17,7 @@ class messageBoard extends React.Component {
   }
 
   render() {
-    const { post } = this.props;
+    // const { post } = this.props;
 
     const handleShowAddForm = () => {
       this.setState({ showAddForm: true })
@@ -51,18 +51,18 @@ class messageBoard extends React.Component {
               currently: clicking 'Create New Post' renders input fields -- clicking 'Chirp!' (submit) only re-renders page
                */}
               {!this.state.showAddForm ?
-                <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton> :
-                <>
-                  <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
-                    <label className="ptl">Title:</label>
-                    {/* eslint-disable-next-line */}
-                    <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" placeholder="New ish" />
-                    <label className="pcl">Topic:</label>
-                    {/* eslint-disable-next-line */}
-                    <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
-                    <SiteButton type="on-submit">Chirp!</SiteButton>
-                  </form>
-                </>
+                <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton> :
+                <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
+                  {/* eslint-disable-next-line */}
+                  <label className="ptl">Title:</label>
+                  {/* eslint-disable-next-line */}
+                  <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" placeholder="New ish" />
+                  {/* eslint-disable-next-line */}
+                  <label className="pcl">Topic:</label>
+                  {/* eslint-disable-next-line */}
+                  <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
+                  <SiteButton type="on-submit">Chirp!</SiteButton>
+                </form>
               }
               <table id="mb-table">
                 <thead>
