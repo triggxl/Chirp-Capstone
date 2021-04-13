@@ -1,6 +1,6 @@
 import React from 'react';
 import chirpContext from '../../chirp-context/chirpContext';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './profile-page.css';
 
 
@@ -12,6 +12,7 @@ const profilePage = () => {
         return (
           <div id="profile-container">
             <h1 id="profile-title">My Profile: [Coming Soon..!]</h1>
+            <Link to="/message-board">Back to Message Board</Link>
             {/* <div>
               <img src="search-bar-icon" alt="search bar icon to search through messages" />
               <!-- links route to corresponding pages; hamburger for 'options' below -->

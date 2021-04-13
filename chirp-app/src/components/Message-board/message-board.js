@@ -6,6 +6,15 @@ import Post from './Post';
 import ChirpingBird from '../pictures/chirping-bird.jpg';
 import SiteButton from '../site-button';
 
+/*
+replies
+edit
+delete
+newPost
+Having trouble assigning db to user Triggxl
+could use some help seeding data to db (through migrations I believe?)
+setting up API endpoints
+ */
 
 class messageBoard extends React.Component {
   constructor(props) {
@@ -27,8 +36,6 @@ class messageBoard extends React.Component {
       e.prevent.default();
       context.createNewPost(post.postId, this.state.postTitle, this.state.postContent)
       this.setState({
-        // newPostTitle: this.state.postTitle,
-        // newPostContent: this.state.postContent,
         isCreatingPost: true
       })
     }
@@ -86,7 +93,6 @@ class messageBoard extends React.Component {
                   )
                 })}
               </table>
-              {/* delete */}
             </div>
           )
         }}

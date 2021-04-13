@@ -4,16 +4,6 @@ import chirpContext from '../../chirp-context/chirpContext';
 import './Post.css';
 import SiteButton from '../site-button';
 
-
-/*
-edit
-  only drop/cancel buttons should appear once clicking edit button
-  edit/drop button should return upon clicking save
-delete
-  only delete button should appear after clicking delete + prompt
-  edit/delete button should disappear after confirming delete
- */
-
 class Post extends React.Component {
   constructor(props) {
     super(props);
@@ -23,9 +13,6 @@ class Post extends React.Component {
       isEdited: false,
       isDeleted: false,
       isSaved: false,
-      // replyToBeEdited: '',
-      // replyIdToBeEdited: -1,
-      // replyNameToBeEdited: '',
     }
   }
   render() {
@@ -38,9 +25,7 @@ class Post extends React.Component {
     }
 
     const toggleEdit = (e, replyId, replyName) => {
-      // console.log(e.target.parentElement.previousElementSibling.innerText)
       this.setState({
-        // statePropety: value from function
         isEdited: true,
         isReplying: false,
         isDeleted: false,
@@ -137,7 +122,6 @@ class Post extends React.Component {
                       })}
                     </td>
                   </tr>
-                  {/* edit figure out how to replace a reply with the text area that you're conditionally rendering */}
                   {this.state.isEdited ? (
                     <tr>
                       <td colspan={6}>
@@ -151,7 +135,6 @@ class Post extends React.Component {
                     </tr>
                   ) : null
                   }
-                  {/* delete */}
                 </> : null
               }
             </tbody>

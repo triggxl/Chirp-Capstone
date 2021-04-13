@@ -1,0 +1,5 @@
+ALTER TABLE newPosts
+DROP COLUMN id;
+
+
+DROP TABLE IF EXISTS newPosts;
