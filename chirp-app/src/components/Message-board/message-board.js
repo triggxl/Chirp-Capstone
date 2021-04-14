@@ -14,6 +14,10 @@ newPost
 Having trouble assigning db to user Triggxl
 could use some help seeding data to db (through migrations I believe?)
 setting up API endpoints
+
+/book/book_id
+CRUD
+  
  */
 
 class messageBoard extends React.Component {
