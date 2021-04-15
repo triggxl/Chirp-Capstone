@@ -1,12 +1,12 @@
 const RepliesService = {
   getAllReplies(knex) {
-    return knex.select('*').from('newReply')
+    return knex.select('*').from('reply')
   },
 
-  insertReplies(knex, newReply) {
+  insertReplies(knex, reply) {
     return knex
-      .insert(newReply)
-      .into('newReply')
+      .insert(reply)
+      .into('reply')
       .returning('*')
       .then(rows => {
         return rows[0]
@@ -15,22 +15,22 @@ const RepliesService = {
 
   getById(knex, id) {
     return knex
-      .from('newReply')
+      .from('reply')
       .select('*')
       .where('id', id)
       .first()
   },
 
   deleteReplies(knex, id) {
-    return knex('newReply')
+    return knex('reply')
       .where({ id })
       .delete()
   },
 
-  updateReplies(knex, id, title, content, newReplyFields) {
-    return knex('newReply')
+  updateReplies(knex, id, title, content, replyFields) {
+    return knex('reply')
       .where({ id, title, content })
-      .update(newReplyFields)
+      .update(replyFields)
   },
 }
 

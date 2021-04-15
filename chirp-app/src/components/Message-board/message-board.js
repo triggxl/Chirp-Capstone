@@ -7,10 +7,20 @@ import ChirpingBird from '../pictures/chirping-bird.jpg';
 import SiteButton from '../site-button';
 
 /*
+Endpoints:
+Posts
+/posts
+  create
+  read
+    GET '/posts
+  delete
 replies
-edit
-delete
-newPost
+/replies
+  create
+    {reply}
+  update
+  delete
+  DELETE/:reply_id
 Having trouble assigning db to user Triggxl
 could use some help seeding data to db (through migrations I believe?)
 setting up API endpoints
@@ -70,7 +80,7 @@ class messageBoard extends React.Component {
                   </div>
                   <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton>
                 </div> :
-                <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
+                <form className="form-inline" key={Math.random()} onSubmit={(e) => buildHandleSubmitForm(e, context)}>
                   {/* eslint-disable-next-line */}
                   <label className="ptl">Title:</label>
                   {/* eslint-disable-next-line */}

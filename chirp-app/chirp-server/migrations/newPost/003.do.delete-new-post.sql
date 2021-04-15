@@ -1,4 +1,0 @@
-ALTER TABLE newPosts
-  ADD COLUMN
-    id INTEGER REFERENCES newPosts(id)
-  ON DELETE SET NULL;

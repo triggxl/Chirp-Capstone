@@ -1,0 +1,3 @@
+-- ALTER TABLE posts
+-- DROP COLUMN id;
+ -- DROP TABLE IF EXISTS posts;

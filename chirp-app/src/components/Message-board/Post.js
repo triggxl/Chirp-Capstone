@@ -91,7 +91,7 @@ class Post extends React.Component {
               {this.state.showDetails ?
                 <>
                   <tr>
-                    <td colspan={6}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at velit eu erat dapibus molestie. Duis lorem mi, facilisis id consequat eleifend, rutrum vel dolor.
+                    <td colSpan={6}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at velit eu erat dapibus molestie. Duis lorem mi, facilisis id consequat eleifend, rutrum vel dolor.
                     <section></section>
                       {/* stateful logic to display textarea */}
                       {this.state.isReplying ?
@@ -105,7 +105,7 @@ class Post extends React.Component {
                     </td>
                   </tr>
                   <tr className="replies-section" key={post.replies.name}>
-                    <td colspan={6}>
+                    <td colSpan={6}>
                       {post.replies.map(reply => {
                         return (
                           <>
@@ -124,7 +124,7 @@ class Post extends React.Component {
                   </tr>
                   {this.state.isEdited ? (
                     <tr>
-                      <td colspan={6}>
+                      <td colSpan={6}>
                         {/* siblings are vertical */}
                         <textarea value={this.state.replyToBeEdited} onChange={handleTextareaEdit} />
                         <div>
