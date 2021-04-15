@@ -1,2 +1,1 @@
-ALTER TABLE postId INTEGER NOT NULL,
-FOREIGN KEY (postId) REFERENCES replies(postId)
+ALTER TABLE replies ALTER COLUMN replyId int;

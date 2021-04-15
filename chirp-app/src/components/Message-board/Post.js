@@ -41,7 +41,8 @@ class Post extends React.Component {
 
     const toggleCancel = () => {
       this.setState({
-        isEdited: false
+        isEdited: false,
+        isReplying: false
       })
     }
 
@@ -97,6 +98,7 @@ class Post extends React.Component {
                       {this.state.isReplying ?
                         <>
                           <textarea></textarea>
+                          <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
                           <SiteButton onClick={buildHandleSave(context)}>Save</SiteButton>
                         </> :
                         // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 

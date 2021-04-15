@@ -1,3 +1,5 @@
+// import axios from 'axios';
+// import UUID from 'react-uuid';
 import React from 'react';
 import { Route } from 'react-router-dom';
 import landingPage from './components/Landing-page/landing-page';
@@ -5,7 +7,7 @@ import messageBoard from './components/Message-board/message-board';
 import profilePage from './components/Profile-page/profile-page';
 import chirpContext from './chirp-context/chirpContext';
 import './App.css';
-// check relative paths
+
 class App extends React.Component {
   static contextType = chirpContext;
   state = {
@@ -85,6 +87,87 @@ class App extends React.Component {
     ]
   }
 
+  // componentDidMount() {
+  //   // 
+  //   axios.post('/posts', {
+  //     data: {
+  //       postId: UUID,
+  //       postTitle: postTitle,
+  //       postContent: postContent
+  //     },
+  //   })
+  //   axios.get('/posts', {
+  //     // 
+  //   })
+  //   axios.put('/posts', {
+  //     // 
+  //   })
+  // }
+  // componentWillUnmount() {
+  //   axios.delete('/posts', {
+  //     // 
+  //   })
+  // }
+  // data is being stored in App
+  // want to keep 1-2 'example' posts on render with ability for user to create their own/reply to example posts
+  // unsure of how to seed dummy data from App into seed files with maintaining referential integrity of data structure
+
+  /*
+Plan:
+  (feature is not yet working fully, need a fresh set of eyes to debug)
+  when creating a post:
+    user is able to create Post by clicking 'Create Post' button
+        brings up title and content fields 
+          user enters in a title for the post
+          user enter in content for the post
+          user clicks 'Chirp'
+            title and content information are captured by form 
+              how: using value= {e.target.value}
+            value is then passed to handler fx in component 
+              how: onSubmit={e, handleChirp}
+            handler function updates variable in App using context
+          form closes and new post is rendered
+  */
+  /*
+  when replying to a post:
+    user is able to reply
+      clicking on the 'Chirp' button
+        displays an input field with 'cancel' and 'save' buttons at the button corners
+          if user clicks Cancel:
+            input field disappears
+          if user clicks Save:
+            grab input from form 
+              how: using e.target.value to target the user's input in all given fields
+              that input will be passed to a handler fx to update state using setState (through a fetch in that component?)
+              which will then be passed through context to handler fx back in App where that state variable needs to be stored
+            input field disappears
+    user is able to edit reply
+      clicks 'Edit' button
+          displays an input field with 'cancel' and 'save' buttons at the button corners
+            if user clicks Cancel:
+              input field disappears
+             if user clicks Save:
+            grab input from form
+              compare values to original
+                if different:
+              how: using e.target.value to target the user's new input in the textfield
+              that input will be passed to a handler fx to update state using setState if (through a fetch in that component?)
+              which will then be passed through context to handler fx back in App where that state variable needs to be stored
+            input field disappears
+      user is able to delete reply
+        clicks 'Delete' button
+          prompt confirms deletion of reply
+          if user clicks 'Cancel':
+            window prompt disappears
+          if user clicks 'Ok':
+            reply is deleted
+              how: 
+                event is fired in buildToggleDelete
+                updates state by using the deleteReply handler in App
+   */
+
+  // handlers (below) are being referenced through context when used to update state in App
+  // how can I tie the handlers to my API requests using fetch() axios() would like to chain each of the promises in 
   createNewPost = (postTitle, postContent) => {
     const newPost = this.setState({
       //  use UUID pass UUID --> would include in .then(setState({...UUID})) to give to server
@@ -96,15 +179,17 @@ class App extends React.Component {
   }
 
   addReply = (postId, reply) => {
-    this.setState((prevState) => {
-      // finds the post with matching id goes into that post's reply, reconstructing new object within array to account for other properties reply has
-      let matchingPost = prevState.posts.find(post => post.postId === postId)
-      prevState.posts[postId - 1].replies.push({
-        content: reply,
-        replyId: matchingPost.replies.length + 1
-      })
-      return prevState
-    })
+    // handle fetch
+
+    // this.setState((prevState) => {
+    //   // finds the post with matching id goes into that post's reply, reconstructing new object within array to account for other properties reply has
+    //   let matchingPost = prevState.posts.find(post => post.postId === postId)
+    //   prevState.posts[postId - 1].replies.push({
+    //     content: reply,
+    //     replyId: matchingPost.replies.length + 1
+    //   })
+    //   return prevState
+    // })
   }
 
   handleEditReply = (postId, replyId, reply, replyName) => {
@@ -189,4 +274,30 @@ Thinkful Sessions:
   process.env says run my environmental variable on whatever server I'm on
   vercel --prod skips preview step and deploys in one step
   how to use gitHub pages
+
+
+
+Axios request:
+
+let apiPosts = "https://api.chirp-app/posts";
+let apiReplies = "https://api.chirp-app/replies";
+
+const requestPosts = axios.get(apiPosts)
+const requestReplies = axios.get(apiReplies)
+
+axios
+  .all([requestPosts, requestReplies])
+  .then(
+    axios.spread((...reponses) => {
+      const responsesCreatePost = responses[0];
+      const responsesEditPost = responses[1];
+      const responsesDeletePost = responses[2];
+      const responsesCreateReply = responses[3];
+      const responsesEditReply = responses[4];
+      const responsesDeleteReply = responses[5];
+
+      //use/access the results (setState?)
+      console.log(responsesCreatePost, responsesEditPost, responsesDeletePost, responsesCreateReply, responsesEditReply, responsesDeleteReply)
+    })
+  )
 */
