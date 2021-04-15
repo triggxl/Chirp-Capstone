@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const xss = require('xss')
-const RepliesService = require('./folders-service')
+const RepliesService = require('./replies-service')
 
 const repliesRouter = express.Router()
 const jsonParser = express.json()
@@ -24,9 +24,9 @@ repliesRouter
   })
   .post(jsonParser, (req, res, next) => {
     const { title, content } = req.body
-    const newReply = { title, content }
+    const reply = { title, content }
 
-    for (const [key, value] of Object.entries(newReply)) {
+    for (const [key, value] of Object.entries(reply)) {
       if (value == null) {
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` }
@@ -36,7 +36,7 @@ repliesRouter
 
     RepliesService.insertFolder(
       req.app.get('db'),
-      newReply
+      reply
     )
       .then(reply => {
         res
