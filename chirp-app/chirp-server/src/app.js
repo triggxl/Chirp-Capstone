@@ -25,8 +25,8 @@ app.get('/', (req, res) => {
   res.send('Hello, world!');
 })
 
-app.use('/posts', postsRouter)
-app.use('/replies', repliesRouter)
+app.use('/posts', postsRouter);
+app.use('/replies', repliesRouter);
 
 app.use((error, req, res, next) => {
   console.error(error)

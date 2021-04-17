@@ -34,6 +34,4 @@ const PostsService = {
   },
 }
 
-module.exports = PostsService
-
-// client is making a GET request to /posts and /notes....undefined id error need to figure out why it's throwing this error....use Postman to make requests to each endpoint to figure out why each route isn't working
+module.exports = PostsService;

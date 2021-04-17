@@ -1,11 +1,9 @@
 import React from 'react';
 
 const chirpContext = React.createContext({
-  mbTitle: [],
-  showThread: [],
-  createNewThread: [],
+  mbTitle: '',
+  showThread: false,
   posts: [],
-  handleCreateThread: () => { },
   handleCreatePost: () => { },
   handleEditPost: () => { },
   handleDeletePost: () => { }

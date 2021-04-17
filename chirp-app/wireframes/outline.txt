@@ -4,6 +4,32 @@ How do I get the info?
 How do I use the information?
 --> write a line of code
 
+
+/*
+4/16
+Kris' learning style:
+
+1.) Creating templates to work off of
+
+ex: How to create a class function:
+class <name> extends from React.Component {
+//constructor
+
+//state
+
+//methods
+  
+// render()
+  return 
+    {JSX}
+}
+
+
+talking things out and being corrected helps me update what I don't know
+
+summarizing what we've done during our session helps me internalize the information
+*/
+
 "I've developed a plan for the feature I want to produce, can you walk through it with me to make sure it makes sense?"
 --------------------------------------------------------------------------------------------------
 

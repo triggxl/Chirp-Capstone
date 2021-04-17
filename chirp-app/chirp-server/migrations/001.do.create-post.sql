@@ -3,29 +3,12 @@ CREATE TABLE posts (
   title TEXT NOT NULL,
   content TEXT NOT NULL
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  -- one to many; want to set foreign key of each reply to reference that post's postId
+-- one to many; want to set foreign key of each reply to reference that post's postId
 -- 4/13: migrations are schema level
 -- seed (insert) at record level
 -- 1.) run migration script
 -- 2.) look for 'seed' script as well
 -- 3.) verify in GUI
-
 
 -- Get migrations fixed
 -- Hit route in postman to see errors until fixed
@@ -37,4 +20,4 @@ CREATE TABLE posts (
 -- Set up API endpoints
 -- 
 -- Seed database with data
--- Posts -primary, Replies Foreign
+-- Posts primary, Replies Foreign

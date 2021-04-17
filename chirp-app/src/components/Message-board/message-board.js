@@ -6,30 +6,6 @@ import Post from './Post';
 import ChirpingBird from '../pictures/chirping-bird.jpg';
 import SiteButton from '../site-button';
 
-/*
-Endpoints:
-Posts
-/posts
-  create
-  read
-    GET '/posts
-  delete
-replies
-/replies
-  create
-    {reply}
-  update
-  delete
-  DELETE/:reply_id
-Having trouble assigning db to user Triggxl
-could use some help seeding data to db (through migrations I believe?)
-setting up API endpoints
-
-/book/book_id
-CRUD
-  
- */
-
 class messageBoard extends React.Component {
   constructor(props) {
     super(props);
@@ -40,18 +16,13 @@ class messageBoard extends React.Component {
   }
 
   render() {
-    // const { post } = this.props;
-
     const handleShowAddForm = () => {
       this.setState({ showAddForm: true })
     }
 
-    const buildHandleSubmitForm = context => (e, post) => {
-      e.prevent.default();
-      context.createNewPost(post.postId, this.state.postTitle, this.state.postContent)
-      this.setState({
-        isCreatingPost: true
-      })
+    const buildHandleSubmitForm = (e, context) => {
+      e.preventDefault();
+      context.createNewPost(this.state.postTitle, this.state.postContent)
     }
 
     return (
@@ -66,11 +37,6 @@ class messageBoard extends React.Component {
                 <Link to="/" key={'/'}>Home</Link>
                 <Link to="/profile" key={'/profile'}>My Profile</Link>
               </div>
-              {/* 
-              (Will finish devloping lines 60-72 in MVP)
-              desired outcome: when 'Create New Post' is clicked show form, input desired text, close up submit and display new Post
-              currently: clicking 'Create New Post' renders input fields -- clicking 'Chirp!' (submit) only re-renders page
-               */}
               {!this.state.showAddForm ?
                 <div>
                   <div id="user-instructions">
@@ -80,7 +46,7 @@ class messageBoard extends React.Component {
                   </div>
                   <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton>
                 </div> :
-                <form className="form-inline" key={Math.random()} onSubmit={(e) => buildHandleSubmitForm(e, context)}>
+                <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
                   {/* eslint-disable-next-line */}
                   <label className="ptl">Title:</label>
                   {/* eslint-disable-next-line */}
@@ -89,7 +55,7 @@ class messageBoard extends React.Component {
                   <label className="pcl">Topic:</label>
                   {/* eslint-disable-next-line */}
                   <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
-                  <SiteButton type="on-submit">Chirp!</SiteButton>
+                  <SiteButton>Chirp!</SiteButton>
                 </form>
               }
               <table id="mb-table">
@@ -118,8 +84,29 @@ class messageBoard extends React.Component {
 export default messageBoard;
 
 
+
 /*
- */
+Endpoints:
+Posts
+/posts
+  create
+  read
+    GET '/posts
+  delete
+replies
+/replies
+  create
+    {reply}
+  update
+  delete
+  DELETE/:reply_id
+Having trouble assigning db to user Triggxl
+could use some help seeding data to db (through migrations I believe?)
+setting up API endpoints
+
+/book/book_id
+CRUD
+
 // Create it in JSX
 // create state....method to update state
 /* (MVP) <select name="drop-down-for-mb" id="drop-down-for-mb" onChange={e.target}>
@@ -151,5 +138,4 @@ export default messageBoard;
     //   this.setState({
     //   })
     // }
-
-*/
+ */

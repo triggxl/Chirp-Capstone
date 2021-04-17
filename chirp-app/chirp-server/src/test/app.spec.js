@@ -1,3 +1,4 @@
+// contains the technical specifications for a given unit of code to pass successfully
 const app = require('../src/app');
 
 describe('App', () => {

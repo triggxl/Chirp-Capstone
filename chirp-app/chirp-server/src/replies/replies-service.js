@@ -34,4 +34,4 @@ const RepliesService = {
   },
 }
 
-module.exports = RepliesService
+module.exports = RepliesService;

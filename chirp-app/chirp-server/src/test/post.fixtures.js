@@ -1,4 +1,5 @@
-const makeNewPostsArray = () => {
+// managing sample/test data for mock xss 
+const makePostsArray = () => {
   return [
     {
       "id": "b0715efe-ffaf-11e8-8eb2-f2802f1b9fd1",
@@ -13,23 +14,23 @@ const makeNewPostsArray = () => {
   ];
 }
 
-function makeMaliciousNewPost() {
-  const makeMaliciousNewPost = {
+function makeMaliciousPost() {
+  const makeMaliciousPost = {
     id: 911,
     name: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
   }
-  const expectedNewPost = {
-    ...makeMaliciousNewPost,
+  const expectedPost = {
+    ...makeMaliciousPost,
     id: 'Naughty naughty very naughty &lt;script&gt;alert(\"xss\");&lt;/script&gt;',
     name: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
   }
   return {
-    makeMaliciousNewPost: makeMaliciousNewPost,
-    expectedReply: expectedNewPost,
+    makeMaliciousPost: makeMaliciousPost,
+    expectedReply: expectedPost,
   }
 }
 
 module.exports = {
-  makeNewPostsArray: makeNewPostsArray,
-  makeMaliciousNewPost: makeMaliciousNewPost
+  makePostsArray: makePostsArray,
+  makeMaliciousPost: makeMaliciousPost
 }

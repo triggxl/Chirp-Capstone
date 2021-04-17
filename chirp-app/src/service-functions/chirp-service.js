@@ -1,5 +1,5 @@
 // for API patch
-handleCreatePost = (postId, reply) => {
+getPost = (postId, reply) => {
   // this.setState({
   //   posts: [...this.state.posts, post]
   // })

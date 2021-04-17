@@ -1,3 +1,2 @@
 ALTER TABLE posts DROP COLUMN postId;
-
--- delete any replies upon deletion as well
+-- needs to delete any replies upon deletion as well

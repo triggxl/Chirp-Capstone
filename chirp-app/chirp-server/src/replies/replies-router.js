@@ -7,7 +7,7 @@ const repliesRouter = express.Router()
 const jsonParser = express.json()
 
 const serializeReply = reply => ({
-  id: newPosts.id,
+  id: posts.id,
   title: xss(reply.title),
   content: xss(reply.content)
 })
@@ -69,4 +69,4 @@ repliesRouter
     res.json(serializeReply(res.reply))
   })
 
-module.exports = repliesRouter
+module.exports = repliesRouter;
