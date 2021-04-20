@@ -23,7 +23,7 @@ postsRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { id, postTitle, postContent } = req.body.newPost;
+    const { id, postTitle, postContent } = req.body;
     const post = { postid: id, title: postTitle, content: postContent }
 
     for (const [key, value] of Object.entries(post)) {
@@ -40,6 +40,7 @@ postsRouter
         const serialized = serializePosts(post)
         res
           .status(201)
+          // forward next call to specified location, chains to specific location if multiple paths
           .location(path.posix.join(req.originalUrl, `/${post.id}`))
           .json(serialized)
       })

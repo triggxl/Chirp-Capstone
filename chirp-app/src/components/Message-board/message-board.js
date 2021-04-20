@@ -24,7 +24,7 @@ class messageBoard extends React.Component {
       this.setState({ showAddForm: true })
     }
 
-    const buildHandleSubmitForm = (e) => {
+    const handlePostSubmitForm = (e) => {
       e.preventDefault();
       const newPost = {
         id: UUID,
@@ -53,6 +53,12 @@ class messageBoard extends React.Component {
       )
     }
 
+    // const handleFetchEditPost = () => {
+    //   const editedPost = {
+
+    //   }
+    // }
+
 
     return (
       <div id="mb-container">
@@ -72,7 +78,7 @@ class messageBoard extends React.Component {
             </div>
             <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton>
           </div> :
-          <form className="form-inline" onSubmit={buildHandleSubmitForm}>
+          <form className="form-inline" onSubmit={handlePostSubmitForm}>
             {/* eslint-disable-next-line */}
             <label className="ptl">Title:</label>
             {/* eslint-disable-next-line */}
