@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import chirpContext from '../../chirp-context/chirpContext';
 import './Post.css';
 import SiteButton from '../site-button';
+import UUID from 'react-uuid';
+import { API_URL } from '../../config';
 
 class Post extends React.Component {
   constructor(props) {
@@ -48,12 +50,12 @@ class Post extends React.Component {
       })
     }
 
-    const handleChirp = () => {
-      // creating ui for reply
-      this.setState({
-        isReplying: true
-      })
-    }
+    // const handleChirp = () => {
+    //   // creating ui for reply
+    //   this.setState({
+    //     isReplying: true
+    //   })
+    // }
 
     const buildToggleDelete = (e, context, replyId) => {
       if (!window.confirm('This reply will be deleted.')) return
@@ -76,6 +78,104 @@ class Post extends React.Component {
       this.setState({ isEdited: false })
     }
 
+    const handleFetchCreateReply = (e) => {
+      e.preventDefault();
+      const createReply = {
+        id: UUID,
+        postTitle: '',
+        postContent: '',
+        participantsInitials: '',
+        numOfParticipants: 0,
+        numOfReplies: 0,
+        replies: [{
+          replyId: UUID,
+          name: this.state.replies.name,
+          content: this.state.replies.content,
+        }],
+        timeOpen: 'One minute ago'
+      }
+      let data = { createReply }
+      fetch(`${API_URL}/replies`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(res => {
+        if (!res.ok) {
+          throw new Error(res.status)
+        }
+        return res.json()
+      }).catch(error => this.setState({ error }
+      )).then(this.context.addReply(this.state.postId, this.state.postContent)
+      )
+    }
+
+    // const handleFetchEditReply = (e) => {
+    //   e.preventDefault();
+    //   const editReply = {
+    //     id: UUID,
+    //     postTitle: this.state.postTitle,
+    //     postContent: this.state.postContent,
+    //     participantsInitials: '',
+    //     numOfParticipants: 0,
+    //     numOfReplies: 0,
+    //     replies: [{
+    //       replyId: UUID,
+    //       name: this.state.replies.name,
+    //       content: this.state.replies.content,
+    //     }],
+    //     timeOpen: 'One minute ago'
+    //   }
+    //   let data = { editReply }
+    //   fetch(`${API_URL}/replies`, {
+    //     method: 'PUT',
+    //     headers: {
+    //       'content-type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   }).then(res => {
+    //     if (!res.ok) {
+    //       throw new Error(res.status)
+    //     }
+    //     return res.json()
+    //   }).catch(error => this.setState({ error }
+    //   )).then(this.context.addReply(this.state.postId, this.state.replyId, this.state.reply, this.state.replyName)
+    //   )
+    // }
+
+    // const handleFetchDeleteReply = (e) => {
+    //   e.preventDefault();
+    //   const deletedReply = {
+    //     id: UUID,
+    //     postTitle: this.state.postTitle,
+    //     postContent: this.state.postContent,
+    //     participantsInitials: '',
+    //     numOfParticipants: 0,
+    //     numOfReplies: 0,
+    //     replies: [{
+    //       replyId: UUID,
+    //       name: this.state.replies.name,
+    //       content: this.state.replies.content,
+    //     }],
+    //     timeOpen: 'One minute ago'
+    //   }
+    //   let data = { deletedReply }
+    //   fetch(`${API_URL}/replies`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'content-type': 'application/json'
+    //     },
+    //     body: JSON.stringify(data)
+    //   }).then(res => {
+    //     if (!res.ok) {
+    //       throw new Error(res.status)
+    //     }
+    //     return res.json()
+    //   }).catch(error => this.setState({ error }
+    //   )).then(this.context.handleDeleteReply(this.state.postId, this.state.replyId)
+    //   )
+    // }
 
     return (
       <chirpContext.Consumer>
@@ -103,7 +203,7 @@ class Post extends React.Component {
                           <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
                         </> :
                         // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                        <SiteButton onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
+                        <SiteButton onClick={handleFetchCreateReply}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
                       }
                     </td>
                   </tr>

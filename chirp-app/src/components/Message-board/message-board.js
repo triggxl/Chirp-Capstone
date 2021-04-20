@@ -24,6 +24,7 @@ class messageBoard extends React.Component {
       this.setState({ showAddForm: true })
     }
 
+
     const handlePostSubmitForm = (e) => {
       e.preventDefault();
       const newPost = {

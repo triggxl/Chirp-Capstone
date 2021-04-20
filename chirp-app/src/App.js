@@ -57,7 +57,7 @@ class App extends React.Component {
   addReply = (postId, content) => {
     const newReply = {
       replyId: 1,
-      name: 'Derek',
+      name: '',
       content: content
     }
     this.setState((prevState) => {
