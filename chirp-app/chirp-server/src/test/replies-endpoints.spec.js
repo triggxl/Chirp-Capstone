@@ -86,10 +86,10 @@ describe('Replies Endpoints', function () {
       })
 
       it('responds with 200 and the specified reply', () => {
-        const ReplyId = 2
-        const expectedReply = testReplys[ReplyId - 1]
+        const replyId = 2
+        const expectedReply = testReplys[replyId - 1]
         return supertest(app)
-          .get(`/api/replies/${ReplyId}`)
+          .get(`/api/replies/${replyId}`)
           .expect(200, expectedReply)
       })
     })
@@ -121,8 +121,8 @@ describe('Replies Endpoints', function () {
     it(`creates a reply, responding with 201 and the new reply`, function () {
       this.retries(3)
       const newReply = {
-        title: 'Test new reply',
         id: 'Test new reply id...',
+        title: 'Test new reply',
       }
       // process.on('uncaughtException', unhandledExceptionCallback);
       return supertest(app)

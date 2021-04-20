@@ -11,22 +11,7 @@ import './App.css';
 class App extends React.Component {
   static contextType = chirpContext;
   state = {
-    // reference in service fx for API calls
     posts: [
-      {
-        postId: 1,
-        postTitle: 'Best Editor EVER!',
-        postConent: '',
-        participantsInitials: 'M, K',
-        numOfParticipants: 2,
-        numOfReplies: 27,
-        replies: [{
-          replyId: 1,
-          name: 'Mike',
-          content: 'This is a great post!'
-        }],
-        timeOpen: '2 days'
-      },
       {
         postId: 2,
         postTitle: '26 Days of X-mas?!',
@@ -41,64 +26,14 @@ class App extends React.Component {
         }],
         timeOpen: '3 weeks'
       },
-      {
-        postId: 3,
-        postTitle: 'Top Specialities in Tech',
-        postConent: '',
-        participantsInitials: 'K, M, L, S, S.A',
-        numOfParticipants: 5,
-        numOfReplies: 67,
-        replies: [{
-          replyId: 1,
-          name: 'Kris',
-          content: 'Cyber security is a popular speciality now-a-days'
-        }],
-        timeOpen: '3 days'
-      },
-      {
-        postId: 4,
-        postTitle: 'My First Project EVER! (Share and Discuss)',
-        postConent: '',
-        participantsInitials: 'M, K, A, B, T, D, L',
-        numOfParticipants: 7,
-        numOfReplies: 184,
-        replies: [{
-          replyId: 1,
-          name: 'Bob',
-          content: 'This was my first post ever, check it out...'
-        }],
-        timeOpen: '2 months'
-      },
-      {
-        postId: 5,
-        postTitle: 'AMA Forum',
-        postContent: '',
-        participantsInitials: 'M, K, D, B, S',
-        numOfParticipants: 5,
-        numOfReplies: 12,
-        replies: [
-          {
-            replyId: 1,
-            name: 'Derek',
-            content: 'What is the last song you listened to?'
-          },
-          {
-            replyId: 2,
-            name: 'Austin',
-            content: 'Californication brother!'
-          },
-        ],
-        timeOpen: '3 hours'
-      }
     ]
   }
 
-  // axios post
   createNewPost = (postTitle, postContent) => {
     const newPost = {
-      postId: Math.random(),
+      postId: '',
       postTitle: postTitle,
-      postContent: postContent,
+      postContent: '',
       participantsInitials: '',
       numOfParticipants: 0,
       numOfReplies: 0, //increment based off addReply for loop... || map iterates through and use counter?
@@ -108,7 +43,7 @@ class App extends React.Component {
     // a cb fx will provide previous state as the callback by default
     this.setState(prevState => {
       // create copy to modify before handing it to setState to prevent mututating and other oddities
-      // copy and then mess with the copy so state is never touched
+      // copy of state to modify
       const originalPosts = [...prevState.posts];
       originalPosts.push(newPost)
       return {
@@ -118,7 +53,6 @@ class App extends React.Component {
     })
   }
 
-  // change into axios put
   // finding matching posts with prevState, editing it dynamically with whatever the user inputs and then giving it back to state
   addReply = (postId, content) => {
     const newReply = {
@@ -130,6 +64,7 @@ class App extends React.Component {
       // finds the post with matching id goes into that post's reply, reconstructing new object within array to account for other properties reply has
       const originalPosts = [...prevState.posts];
       let matchingPost = originalPosts.find(post => post.postId === postId);
+      console.log(matchingPost)
       // add new reply to matching post
       matchingPost.replies.push(newReply);
       return {
@@ -138,8 +73,9 @@ class App extends React.Component {
     })
   }
 
-  //axios update
+  // patch
   handleEditReply = (postId, replyId, reply, replyName) => {
+    console.log(this.state.replies)
     this.setState(prevState =>
       // exact reply to change
       prevState.posts[postId - 1].replies[replyId - 1] = {
@@ -150,7 +86,7 @@ class App extends React.Component {
     )
   }
 
-  // axios delete
+  // delete
   handleDeleteReply = (postId, replyId) => {
     this.setState(prevState => {
       delete prevState.posts[postId - 1].replies[replyId - 1]
@@ -195,7 +131,22 @@ Completed:
 
 Next Steps:
 
+4/17
+[] How to turn these methods into fetch calls?
+
+with the ability for user to create a new post- add, edit, and delete replies to it stored on server
+I'm trying to write out my fetch calls to support creating a post, which includes creating, editing, and deleting a reply.
+I need help understanding how to store all of this data on a server
+CRUD operations are all happening on the same page, no need to route to specific endpoints; operations are just being performed separately
+is this accomplishing the same as createNewPost but with an endpoint to store the data on?
+how do I tie that endpoint to my database?
+
+
+Write out API fetch calls + test in postman
+Store data in DB
+
 4/16
+// reference in service fx for API calls
 // exercise: accessing nested properties
 // componentDidMount() {
   //   //
@@ -325,6 +276,7 @@ Thinkful Sessions:
 
 Axios request: ((-) all reponses have to complete to run)
 
+(this looks cleaner to me/more organized)
 let apiPosts = "https://api.chirp-app/posts";
 let apiReplies = "https://api.chirp-app/replies";
 

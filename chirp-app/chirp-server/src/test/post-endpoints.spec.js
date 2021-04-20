@@ -1,7 +1,7 @@
 // manage sample/test data
 const knex = require('knex')
 const app = require('../src/app')
-const { makeNewPostArray: makePostArray, makeMaliciousPost } = require('./test/post.fixtures')
+const { makePostArray, makeMaliciousPost } = require('./test/post.fixtures')
 
 describe('Posts Endpoints', function () {
   let db
@@ -59,7 +59,7 @@ describe('Posts Endpoints', function () {
           .get(`/api/post`)
           .expect(200)
           .expect(res => {
-            expect(res.body[0].id).to.eql(expectedPost.id)
+            expect(res.body[0].postId).to.eql(expectedPost.postId)
             expect(res.body[0].title).to.eql(expectedPost.title)
             expect(res.body[0].content).to.eql(expectedPost.content)
           })

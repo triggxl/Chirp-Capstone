@@ -63,16 +63,16 @@ class Post extends React.Component {
         isEdited: false,
         isReplying: false,
       })
-      context.deleteReply(post.postId, replyId)
+      context.deleteReply(post.id, replyId)
     }
 
     const buildHandleSave = (e, context) => {
-      context.addReply(post.postId, e.target.previousElementSibling.value);
+      context.addReply(post.id, e.target.previousElementSibling.value);
       this.setState({ isReplying: false })
     }
 
     const buildHandleSaveOnEdit = (e, context) => {
-      context.editReply(post.postId, this.state.replyIdToBeEdited, this.state.replyToBeEdited, this.state.replyNameToBeEdited)
+      context.editReply(post.id, this.state.replyIdToBeEdited, this.state.replyToBeEdited, this.state.replyNameToBeEdited)
       this.setState({ isEdited: false })
     }
 
@@ -81,7 +81,7 @@ class Post extends React.Component {
       <chirpContext.Consumer>
         {context => {
           return (
-            < tbody key={post.postId}>
+            < tbody key={post.id}>
               <tr id="tr-threads">
                 <td>{post.postTitle}</td>
                 <td>{post.participantsInitials}</td>
@@ -162,16 +162,16 @@ export default Post;
 // text from the input field
 
 // how do you use that info to solve the problem
-// find the correct post // how: find postId
+// find the correct post // how: find id
 // find the correct reply
 // find replyId // update reply //assign reply with new data
 
-// post.postId, postId
+// post.id, id
 // post.replies[replyId - 1].replyId, replyId
 // DOM traversal: (S) Save button (E) textarea
 // innerText vs. value
-// let matchingPostId = post.postId;
-// console.log(matchingPostId)
+// let matchingid = post.id;
+// console.log(matchingid)
 // let matchingReplyId = this.state.replyIdToBeEdited;
 // console.log(matchingReplyId)
 // let editedReply = e.target.parentNode.firstChild.value;

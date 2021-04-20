@@ -23,29 +23,30 @@ postsRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { id, postName } = req.body
-    const post = { id, postName }
+    const { id, postTitle, postContent } = req.body.newPost;
+    const post = { postid: id, title: postTitle, content: postContent }
 
     for (const [key, value] of Object.entries(post)) {
       if (value == null) {
-        return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` }
-        })
+        next(`Missing '${key}' in request body`)
       }
     }
 
-    PostService.insertNewPost(
+    PostService.insertPosts(
       req.app.get('db'),
       post
     )
       .then(post => {
+        const serialized = serializePosts(post)
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${post.id}`))
-          .json(serializePosts(post))
+          .json(serialized)
       })
       .catch(next)
   })
+// 4/19 error: adding new header after sending response
+// try recreating your post handler in this file || move on to building out other fetch calls
 
 postsRouter
   .route('/:post_id')

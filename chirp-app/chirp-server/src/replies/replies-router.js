@@ -7,7 +7,7 @@ const repliesRouter = express.Router()
 const jsonParser = express.json()
 
 const serializeReply = reply => ({
-  id: posts.id,
+  id: posts.postId,
   title: xss(reply.title),
   content: xss(reply.content)
 })
@@ -41,7 +41,7 @@ repliesRouter
       .then(reply => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${reply.id}`))
+          .location(path.posix.join(req.originalUrl, `/${reply.replyId}`))
           .json(serializeReply(reply))
       })
       .catch(next)

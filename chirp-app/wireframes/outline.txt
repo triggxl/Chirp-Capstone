@@ -26,8 +26,12 @@ class <name> extends from React.Component {
 
 
 talking things out and being corrected helps me update what I don't know
-
 summarizing what we've done during our session helps me internalize the information
+Giving me small coding exercises helps me solidify concepts
+A checklist of tasks helps me keep track of my progress 
+Keeping things in a single document each session or date helps me when reviewing to visualize each session and what we've covered
+
+Reference function (...args) + README.md where you listed put the entire process in one of your projects
 */
 
 "I've developed a plan for the feature I want to produce, can you walk through it with me to make sure it makes sense?"

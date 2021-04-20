@@ -5,8 +5,11 @@ import './message-board.css';
 import Post from './Post';
 import ChirpingBird from '../pictures/chirping-bird.jpg';
 import SiteButton from '../site-button';
+import { API_URL } from '../../config';
+import UUID from 'react-uuid';
 
 class messageBoard extends React.Component {
+  static contextType = chirpContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -16,68 +19,88 @@ class messageBoard extends React.Component {
   }
 
   render() {
+
     const handleShowAddForm = () => {
       this.setState({ showAddForm: true })
     }
 
-    const buildHandleSubmitForm = (e, context) => {
+    const buildHandleSubmitForm = (e) => {
       e.preventDefault();
-      context.createNewPost(this.state.postTitle, this.state.postContent)
+      const newPost = {
+        id: UUID,
+        postTitle: this.state.postTitle,
+        postContent: this.state.postContent,
+        participantsInitials: '',
+        numOfParticipants: 0,
+        numOfReplies: 0,
+        replies: [],
+        timeOpen: 'One minute ago'
+      }
+      let data = { newPost }
+      fetch(`${API_URL}/posts`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(res => {
+        if (!res.ok) {
+          throw new Error(res.status)
+        }
+        return res.json()
+      }).catch(error => this.setState({ error }
+      )).then(this.context.createNewPost(this.state.postTitle, this.state.postContent)
+      )
     }
 
+
     return (
-      <chirpContext.Consumer>
-        {(context) => {
-          return (
-            <div id="mb-container">
-              <img src={ChirpingBird} alt="bird chirping on a tree branch" />
-              <h1 id="mb-page-title">Chirp(En-Passant) Message Board:</h1>
-              {/* <img src="search-bar-icon" alt="search bar icon for message board" /> */}
-              <div id="mb-links">
-                <Link to="/" key={'/'}>Home</Link>
-                <Link to="/profile" key={'/profile'}>My Profile</Link>
-              </div>
-              {!this.state.showAddForm ?
-                <div>
-                  <div id="user-instructions">
-                    <header>Directions:</header>
-                    <p>1.) Click one of the arrows to the right to view a post</p>
-                    <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!- Actual content will be added instead of 'default' posts in next release.) </p>
-                  </div>
-                  <SiteButton onClick={handleShowAddForm}>Create New Post (Coming Soon!)</SiteButton>
-                </div> :
-                <form className="form-inline" onSubmit={(e) => buildHandleSubmitForm(e, context)}>
-                  {/* eslint-disable-next-line */}
-                  <label className="ptl">Title:</label>
-                  {/* eslint-disable-next-line */}
-                  <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" placeholder="New ish" />
-                  {/* eslint-disable-next-line */}
-                  <label className="pcl">Topic:</label>
-                  {/* eslint-disable-next-line */}
-                  <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
-                  <SiteButton>Chirp!</SiteButton>
-                </form>
-              }
-              <table id="mb-table">
-                <thead>
-                  <tr id="table-row">
-                    <th>Title</th>
-                    <th>Participants</th>
-                    <th># of Messages in Thread</th>
-                    <th className="open-since-column" >Open Since</th>
-                  </tr>
-                </thead>
-                {context.posts.map((post, idx) => {
-                  return (
-                    <Post post={post} />
-                  )
-                })}
-              </table>
+      <div id="mb-container">
+        <img src={ChirpingBird} alt="bird chirping on a tree branch" />
+        <h1 id="mb-page-title">Chirp(En-Passant) Message Board:</h1>
+        {/* <img src="search-bar-icon" alt="search bar icon for message board" /> */}
+        <div id="mb-links">
+          <Link to="/" key={'/'}>Home</Link>
+          <Link to="/profile" key={'/profile'}>My Profile</Link>
+        </div>
+        {!this.state.showAddForm ?
+          <div>
+            <div id="user-instructions">
+              <h3>Chirp Instructions:</h3>
+              <p>1.) Click one of the arrows to the right to view a post OR Create your own!</p>
+              <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!) </p>
             </div>
-          )
-        }}
-      </chirpContext.Consumer>
-    )
+            <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton>
+          </div> :
+          <form className="form-inline" onSubmit={buildHandleSubmitForm}>
+            {/* eslint-disable-next-line */}
+            <label className="ptl">Title:</label>
+            {/* eslint-disable-next-line */}
+            <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" placeholder="New ish" />
+            {/* eslint-disable-next-line */}
+            <label className="pcl">Topic:</label>
+            {/* eslint-disable-next-line */}
+            <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
+            {<SiteButton>Chirp!</SiteButton>}
+          </form>
+        }
+        <table id="mb-table">
+          <thead>
+            <tr id="table-row">
+              <th>Title</th>
+              <th>Participants</th>
+              <th># of Messages in Thread</th>
+              <th className="open-since-column" >Open Since</th>
+            </tr>
+          </thead>
+          {this.context.posts.map(post => {
+            return (
+              <Post post={post} key={post.postTitle} />
+            )
+          })}
+        </table>
+      </div>
+    );
   }
 }
 
@@ -86,6 +109,10 @@ export default messageBoard;
 
 
 /*
+
+Todo:
+ after submitting: hide content fields and display 'Chirp' button again to add another post
+
 Endpoints:
 Posts
 /posts

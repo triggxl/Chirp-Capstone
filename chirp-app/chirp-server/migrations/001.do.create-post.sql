@@ -21,3 +21,9 @@ CREATE TABLE posts (
 -- 
 -- Seed database with data
 -- Posts primary, Replies Foreign
+
+-- 4/18
+-- rename postId && replyId to id
+-- drop/create/run migrations
+-- 1) trigger fetch 2) setState in .then of fetch 3. look at server logs (repeat until working)
+-- write smoke test for each component 'does render without errors'
