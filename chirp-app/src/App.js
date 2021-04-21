@@ -7,6 +7,7 @@ import messageBoard from './components/Message-board/message-board';
 import profilePage from './components/Profile-page/profile-page';
 import chirpContext from './chirp-context/chirpContext';
 import './App.css';
+import { API_URL } from './config'
 
 class App extends React.Component {
   static contextType = chirpContext;
@@ -28,6 +29,11 @@ class App extends React.Component {
       },
     ]
   }
+
+  componentDidMount() {
+    fetch(`${API_URL}/posts`).then(res => res.json()).then(data => this.setState({ posts: data }))
+  }
+
 
   createNewPost = (id, postTitle, postContent) => {
     const newPost = {

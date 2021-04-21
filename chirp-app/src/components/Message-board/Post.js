@@ -88,7 +88,7 @@ class Post extends React.Component {
         numOfReplies: 0,
         replies: [{
           replyId: UUID(),
-          title: this.state.replies[1].title,
+          title: this.state.replies.title,
           content: this.state.replies.content,
         }],
         timeOpen: 'One minute ago'
@@ -137,7 +137,7 @@ class Post extends React.Component {
         }
         return res.json()
       }).catch(error => this.setState({ error }
-      )).then(() => this.context.editReply(this.state.postId, this.state.replyId, this.state.reply, this.state.replyName)
+      )).then(() => this.context.editReply(this.state.id, this.state.replyId, this.state.replies.title, this.state.replies.content)
       )
     }
 
