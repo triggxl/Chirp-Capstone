@@ -24,25 +24,20 @@ postsRouter
   })
   .post(jsonParser, (req, res, next) => {
     const { id, postTitle, postContent } = req.body;
-    const post = { postid: id, title: postTitle, content: postContent }
+    const post = { postId: id, title: postTitle, content: postContent }
 
     for (const [key, value] of Object.entries(post)) {
       if (value == null) {
-        next(`Missing '${key}' in request body`)
+        return next(`Missing '${key}' in request body`)
       }
     }
-
-    PostService.insertPosts(
+    return PostService.insertPosts(
       req.app.get('db'),
       post
     )
       .then(post => {
         const serialized = serializePosts(post)
-        res
-          .status(201)
-          // forward next call to specified location, chains to specific location if multiple paths
-          .location(path.posix.join(req.originalUrl, `/${post.id}`))
-          .json(serialized)
+        res.json(serialized)
       })
       .catch(next)
   })

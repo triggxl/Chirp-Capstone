@@ -8,7 +8,7 @@ module.exports = () => (
     numOfReplies: 27,
     replies: [{
       replyId: 1,
-      name: 'Mike',
+      title: 'Mike',
       content: 'This is a great post!'
     }],
     timeOpen: '2 days'
@@ -22,7 +22,7 @@ module.exports = () => (
     numOfReplies: 175,
     replies: [{
       replyId: 1,
-      name: 'Karen',
+      title: 'Karen',
       content: 'That would be great, I wish this holiday was longer!!'
     }],
     timeOpen: '3 weeks'
@@ -36,7 +36,7 @@ module.exports = () => (
     numOfReplies: 67,
     replies: [{
       replyId: 1,
-      name: 'Kris',
+      title: 'Kris',
       content: 'Cyber security is a popular speciality now-a-days'
     }],
     timeOpen: '3 days'
@@ -50,7 +50,7 @@ module.exports = () => (
     numOfReplies: 184,
     replies: [{
       replyId: 1,
-      name: 'Bob',
+      title: 'Bob',
       content: 'This was my first post ever, check it out...'
     }],
     timeOpen: '2 months'
@@ -65,12 +65,12 @@ module.exports = () => (
     replies: [
       {
         replyId: 1,
-        name: 'Derek',
+        title: 'Derek',
         content: 'What is the last song you listened to?'
       },
       {
         replyId: 2,
-        name: 'Austin',
+        title: 'Austin',
         content: 'Californication brother!'
       },
     ],

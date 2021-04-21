@@ -21,7 +21,7 @@ class App extends React.Component {
         numOfReplies: 175,
         replies: [{
           replyId: 1,
-          name: 'Karen',
+          title: 'Karen',
           content: 'That would be great, I wish this holiday was longer!!'
         }],
         timeOpen: '3 weeks'
@@ -42,8 +42,7 @@ class App extends React.Component {
     }
     // a cb fx will provide previous state as the callback by default
     this.setState(prevState => {
-      // create copy to modify before handing it to setState to prevent mututating and other oddities
-      // copy of state to modify
+      // copy of state to modify to prevent mututating and other oddities
       const originalPosts = [...prevState.posts];
       originalPosts.push(newPost)
       return {
@@ -57,7 +56,7 @@ class App extends React.Component {
   addReply = (postId, content) => {
     const newReply = {
       replyId: 1,
-      name: '',
+      title: '',
       content: content
     }
     this.setState((prevState) => {
@@ -74,13 +73,13 @@ class App extends React.Component {
   }
 
   // patch
-  handleEditReply = (postId, replyId, reply, replyName) => {
+  handleEditReply = (postId, replyId, reply, replyTitle) => {
     console.log(this.state.replies)
     this.setState(prevState =>
       // exact reply to change
       prevState.posts[postId - 1].replies[replyId - 1] = {
         replyId: replyId,
-        name: replyName,
+        title: replyTitle,
         content: reply
       }
     )

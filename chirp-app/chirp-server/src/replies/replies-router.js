@@ -23,8 +23,8 @@ repliesRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { title, content } = req.body
-    const reply = { title, content }
+    const { content, postId, title } = req.body
+    const reply = { content, postId, title }
 
     for (const [key, value] of Object.entries(reply)) {
       if (value == null) {

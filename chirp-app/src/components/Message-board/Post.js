@@ -26,17 +26,17 @@ class Post extends React.Component {
       })
     }
 
-    const toggleEdit = (e, replyId, replyName) => {
-      console.log(toggleEdit)
-      this.setState({
-        isEdited: true,
-        isReplying: false,
-        isDeleted: false,
-        replyToBeEdited: e.target.parentElement.previousElementSibling.innerText,
-        replyIdToBeEdited: replyId,
-        replyNameToBeEdited: replyName
-      })
-    }
+    // const toggleEdit = (e, replyId, replyTitle) => {
+    //   console.log(toggleEdit)
+    //   this.setState({
+    //     isEdited: true,
+    //     isReplying: false,
+    //     isDeleted: false,
+    //     replyToBeEdited: e.target.parentElement.previousElementSibling.innerText,
+    //     replyIdToBeEdited: replyId,
+    //     replyTitleToBeEdited: replyTitle
+    //   })
+    // }
 
     const handleTextareaEdit = (e) => {
       this.setState({ replyToBeEdited: e.target.value })
@@ -57,16 +57,16 @@ class Post extends React.Component {
     //   })
     // }
 
-    const buildToggleDelete = (e, context, replyId) => {
-      if (!window.confirm('This reply will be deleted.')) return
-      this.setState({
-        // find reply that matches post && remove it
-        isDeleted: true,
-        isEdited: false,
-        isReplying: false,
-      })
-      context.deleteReply(post.id, replyId)
-    }
+    // const buildToggleDelete = (e, context, replyId) => {
+    //   if (!window.confirm('This reply will be deleted.')) return
+    //   this.setState({
+    //     // find reply that matches post && remove it
+    //     isDeleted: true,
+    //     isEdited: false,
+    //     isReplying: false,
+    //   })
+    //   context.deleteReply(post.id, replyId)
+    // }
 
     const buildHandleSave = (e, context) => {
       context.addReply(post.id, e.target.previousElementSibling.value);
@@ -74,22 +74,21 @@ class Post extends React.Component {
     }
 
     const buildHandleSaveOnEdit = (e, context) => {
-      context.editReply(post.id, this.state.replyIdToBeEdited, this.state.replyToBeEdited, this.state.replyNameToBeEdited)
+      context.editReply(post.id, this.state.replyIdToBeEdited, this.state.replyToBeEdited, this.state.replyTitleToBeEdited)
       this.setState({ isEdited: false })
     }
 
-    const handleFetchCreateReply = (e) => {
-      e.preventDefault();
+    const handleFetchCreateReply = () => {
       const createReply = {
-        id: UUID,
+        id: UUID(),
         postTitle: '',
         postContent: '',
         participantsInitials: '',
         numOfParticipants: 0,
         numOfReplies: 0,
         replies: [{
-          replyId: UUID,
-          name: this.state.replies.name,
+          replyId: UUID(),
+          title: this.state.replies[1].title,
           content: this.state.replies.content,
         }],
         timeOpen: 'One minute ago'
@@ -111,71 +110,60 @@ class Post extends React.Component {
       )
     }
 
-    // const handleFetchEditReply = (e) => {
-    //   e.preventDefault();
-    //   const editReply = {
-    //     id: UUID,
-    //     postTitle: this.state.postTitle,
-    //     postContent: this.state.postContent,
-    //     participantsInitials: '',
-    //     numOfParticipants: 0,
-    //     numOfReplies: 0,
-    //     replies: [{
-    //       replyId: UUID,
-    //       name: this.state.replies.name,
-    //       content: this.state.replies.content,
-    //     }],
-    //     timeOpen: 'One minute ago'
-    //   }
-    //   let data = { editReply }
-    //   fetch(`${API_URL}/replies`, {
-    //     method: 'PUT',
-    //     headers: {
-    //       'content-type': 'application/json'
-    //     },
-    //     body: JSON.stringify(data)
-    //   }).then(res => {
-    //     if (!res.ok) {
-    //       throw new Error(res.status)
-    //     }
-    //     return res.json()
-    //   }).catch(error => this.setState({ error }
-    //   )).then(this.context.addReply(this.state.postId, this.state.replyId, this.state.reply, this.state.replyName)
-    //   )
-    // }
+    const handleFetchEditReply = () => {
+      const editReply = {
+        id: UUID(),
+        postTitle: this.state.postTitle,
+        postContent: this.state.postContent,
+        participantsInitials: '',
+        numOfParticipants: 0,
+        numOfReplies: 0,
+        replies: [{
+          replyId: UUID(),
+          title: this.state.title,
+          content: this.state.content,
+        }],
+        timeOpen: 'One minute ago'
+      }
+      fetch(`${API_URL}/replies`, {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(editReply)
+      }).then(res => {
+        if (!res.ok) {
+          throw new Error(res.status)
+        }
+        return res.json()
+      }).catch(error => this.setState({ error }
+      )).then(() => this.context.editReply(this.state.postId, this.state.replyId, this.state.reply, this.state.replyName)
+      )
+    }
 
-    // const handleFetchDeleteReply = (e) => {
-    //   e.preventDefault();
-    //   const deletedReply = {
-    //     id: UUID,
-    //     postTitle: this.state.postTitle,
-    //     postContent: this.state.postContent,
-    //     participantsInitials: '',
-    //     numOfParticipants: 0,
-    //     numOfReplies: 0,
-    //     replies: [{
-    //       replyId: UUID,
-    //       name: this.state.replies.name,
-    //       content: this.state.replies.content,
-    //     }],
-    //     timeOpen: 'One minute ago'
-    //   }
-    //   let data = { deletedReply }
-    //   fetch(`${API_URL}/replies`, {
-    //     method: 'DELETE',
-    //     headers: {
-    //       'content-type': 'application/json'
-    //     },
-    //     body: JSON.stringify(data)
-    //   }).then(res => {
-    //     if (!res.ok) {
-    //       throw new Error(res.status)
-    //     }
-    //     return res.json()
-    //   }).catch(error => this.setState({ error }
-    //   )).then(this.context.handleDeleteReply(this.state.postId, this.state.replyId)
-    //   )
-    // }
+    const handleFetchDeleteReply = () => {
+      const deletedReply = {
+        id: this.state.postId,
+        replies: [{
+          replyId: this.state.replyId,
+        }],
+        timeOpen: 'One minute ago'
+      }
+      fetch(`${API_URL}/replies`, {
+        method: 'DELETE',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(deletedReply)
+      }).then(res => {
+        if (!res.ok) {
+          throw new Error(res.status)
+        }
+        return res.json()
+      }).catch(error => this.setState({ error }
+      )).then(() => this.context.deleteReply(this.state.postId, this.state.replyId)
+      )
+    }
 
     return (
       <chirpContext.Consumer>
@@ -203,11 +191,11 @@ class Post extends React.Component {
                           <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
                         </> :
                         // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                        <SiteButton onClick={handleFetchCreateReply}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
+                        <SiteButton onClick={(e) => handleFetchCreateReply(e)}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
                       }
                     </td>
                   </tr>
-                  <tr className="replies-section" key={post.replies.name}>
+                  <tr className="replies-section" key={post.replies.title}>
                     <td colSpan={6}>
                       {post.replies.map(reply => {
                         return (
@@ -217,8 +205,8 @@ class Post extends React.Component {
                             }
                             <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <SiteButton onClick={(e) => toggleEdit(e, reply.replyId, reply.name)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
-                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={(e) => buildToggleDelete(e, context, reply.replyId)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
+                              {!this.state.isEdited && <SiteButton onClick={handleFetchEditReply()}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
+                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={(e) => handleFetchDeleteReply(e)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
                             </div>
                           </>
                         )

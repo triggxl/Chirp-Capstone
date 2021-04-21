@@ -25,10 +25,10 @@ class messageBoard extends React.Component {
     }
 
 
-    const handlePostSubmitForm = (e) => {
+    const handleFetchFormCreatePost = (e) => {
       e.preventDefault();
       const newPost = {
-        id: UUID,
+        id: UUID(),
         postTitle: this.state.postTitle,
         postContent: this.state.postContent,
         participantsInitials: '',
@@ -37,29 +37,21 @@ class messageBoard extends React.Component {
         replies: [],
         timeOpen: 'One minute ago'
       }
-      let data = { newPost }
       fetch(`${API_URL}/posts`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(newPost)
       }).then(res => {
         if (!res.ok) {
           throw new Error(res.status)
         }
         return res.json()
       }).catch(error => this.setState({ error }
-      )).then(this.context.createNewPost(this.state.postTitle, this.state.postContent)
+      )).then(() => this.context.createNewPost(this.state.postTitle, this.state.postContent)
       )
     }
-
-    // const handleFetchEditPost = () => {
-    //   const editedPost = {
-
-    //   }
-    // }
-
 
     return (
       <div id="mb-container">
@@ -79,7 +71,7 @@ class messageBoard extends React.Component {
             </div>
             <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton>
           </div> :
-          <form className="form-inline" onSubmit={handlePostSubmitForm}>
+          <form className="form-inline" onSubmit={handleFetchFormCreatePost}>
             {/* eslint-disable-next-line */}
             <label className="ptl">Title:</label>
             {/* eslint-disable-next-line */}
