@@ -29,11 +29,11 @@ class App extends React.Component {
     ]
   }
 
-  createNewPost = (postTitle, postContent) => {
+  createNewPost = (id, postTitle, postContent) => {
     const newPost = {
-      postId: '',
+      postId: id,
       postTitle: postTitle,
-      postContent: '',
+      postContent: postContent,
       participantsInitials: '',
       numOfParticipants: 0,
       numOfReplies: 0, //increment based off addReply for loop... || map iterates through and use counter?

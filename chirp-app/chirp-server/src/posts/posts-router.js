@@ -24,7 +24,7 @@ postsRouter
   })
   .post(jsonParser, (req, res, next) => {
     const { id, postTitle, postContent } = req.body;
-    const post = { postId: id, title: postTitle, content: postContent }
+    const post = { postid: id, title: postTitle, content: postContent }
 
     for (const [key, value] of Object.entries(post)) {
       if (value == null) {

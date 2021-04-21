@@ -49,7 +49,7 @@ class messageBoard extends React.Component {
         }
         return res.json()
       }).catch(error => this.setState({ error }
-      )).then(() => this.context.createNewPost(this.state.postTitle, this.state.postContent)
+      )).then(() => this.context.createNewPost(this.state.id, this.state.postTitle, this.state.postContent)
       )
     }
 
