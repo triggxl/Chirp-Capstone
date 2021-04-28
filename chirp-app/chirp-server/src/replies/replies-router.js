@@ -6,10 +6,11 @@ const RepliesService = require('./replies-service')
 const repliesRouter = express.Router()
 const jsonParser = express.json()
 
+// making 'safe' version of reply from db
 const serializeReply = reply => ({
-  id: posts.postId,
-  title: xss(reply.title),
-  content: xss(reply.content)
+  id: reply.id,
+  content: xss(reply.content),
+  postId: reply.postid
 })
 
 repliesRouter
@@ -18,13 +19,16 @@ repliesRouter
     const knexInstance = req.app.get('db')
     RepliesService.getAllReplies(knexInstance)
       .then(replies => {
+        console.log(replies)
         res.json(replies.map(serializeReply))
       })
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { content, postId, title } = req.body
-    const reply = { content, postId, title }
+    // what our client gave us
+    const { content, postId, id } = req.body
+    // destructuring and creating new object with new keys
+    const reply = { content, postid: postId, id }
 
     for (const [key, value] of Object.entries(reply)) {
       if (value == null) {
@@ -34,7 +38,7 @@ repliesRouter
       }
     }
 
-    RepliesService.insertFolder(
+    RepliesService.insertReplies(
       req.app.get('db'),
       reply
     )
@@ -47,12 +51,13 @@ repliesRouter
       .catch(next)
   })
 
+
 repliesRouter
   .route('/:reply_id')
-  .all((req, res, next) => {
-    RepliesService.getById(
+  .delete((req, res, next) => {
+    RepliesService.deleteReplies(
       req.app.get('db'),
-      req.params.user_id
+      req.params.reply_id
     )
       .then(reply => {
         if (!reply) {
@@ -60,8 +65,7 @@ repliesRouter
             error: { message: `Reply doesn't exist` }
           })
         }
-        res.reply = reply
-        next()
+        res.json(reply)
       })
       .catch(next)
   })

@@ -14,7 +14,9 @@ class messageBoard extends React.Component {
     super(props);
     this.state = {
       isCreatingPost: false,
-      showAddForm: false
+      showAddForm: false,
+      title: '',
+      content: '',
     }
   }
 
@@ -29,8 +31,8 @@ class messageBoard extends React.Component {
       e.preventDefault();
       const newPost = {
         id: UUID(),
-        postTitle: this.state.postTitle,
-        postContent: this.state.postContent,
+        title: this.state.title,
+        content: this.state.content,
         participantsInitials: '',
         numOfParticipants: 0,
         numOfReplies: 0,
@@ -49,7 +51,7 @@ class messageBoard extends React.Component {
         }
         return res.json()
       }).catch(error => this.setState({ error }
-      )).then(() => this.context.createNewPost(this.state.id, this.state.postTitle, this.state.postContent)
+      )).then(() => this.context.createNewPost(this.state.id, this.state.title, this.state.content)
       )
     }
 
@@ -75,11 +77,11 @@ class messageBoard extends React.Component {
             {/* eslint-disable-next-line */}
             <label className="ptl">Title:</label>
             {/* eslint-disable-next-line */}
-            <input className="post-title" onChange={(e) => this.setState({ postTitle: e.target.value })} value={this.state.postTitle} type="text" id="new-post-title" placeholder="New ish" />
+            <input className="post-title" onChange={(e) => this.setState({ title: e.target.value })} value={this.state.title} type="text" id="new-post-title" placeholder="New ish" />
             {/* eslint-disable-next-line */}
             <label className="pcl">Topic:</label>
             {/* eslint-disable-next-line */}
-            <input className="post-content" onChange={(e) => this.setState({ postContent: e.target.value })} value={this.state.postContent} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
+            <input className="post-content" onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} type="text" id="new-post-topic" placeholder="down 4 and 7 beers ago..." />
             {<SiteButton>Chirp!</SiteButton>}
           </form>
         }
@@ -87,14 +89,14 @@ class messageBoard extends React.Component {
           <thead>
             <tr id="table-row">
               <th>Title</th>
-              <th>Participants</th>
+              {/* <th>Participants</th> */}
               <th># of Messages in Thread</th>
               <th className="open-since-column" >Open Since</th>
             </tr>
           </thead>
           {this.context.posts.map(post => {
             return (
-              <Post post={post} key={post.postTitle} />
+              <Post post={post} key={post.title} />
             )
           })}
         </table>

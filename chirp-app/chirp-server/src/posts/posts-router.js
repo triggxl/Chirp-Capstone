@@ -7,9 +7,10 @@ const postsRouter = express.Router()
 const jsonParser = express.json()
 
 const serializePosts = newPost => ({
-  id: newPost.id,
+  id: newPost.postid,
   title: xss(newPost.title),
-  content: xss(newPost.content)
+  content: xss(newPost.content),
+  replies: []
 })
 
 postsRouter
@@ -23,8 +24,8 @@ postsRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { id, postTitle, postContent } = req.body;
-    const post = { postid: id, title: postTitle, content: postContent }
+    const { id, title, content } = req.body;
+    const post = { postid: id, title: title, content: content }
 
     for (const [key, value] of Object.entries(post)) {
       if (value == null) {

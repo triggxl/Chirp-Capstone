@@ -1,8 +1,8 @@
 module.exports = () => (
   {
     post: 1,
-    postTitle: 'Best Editor EVER!',
-    postContent: '',
+    title: 'Best Editor EVER!',
+    content: '',
     participantsInitials: 'M, K',
     numOfParticipants: 2,
     numOfReplies: 27,
@@ -15,8 +15,8 @@ module.exports = () => (
   },
   {
     postId: 2,
-    postTitle: '26 Days of X-mas?!',
-    postContent: '',
+    title: '26 Days of X-mas?!',
+    content: '',
     participantsInitials: 'M, K, T, L',
     numOfParticipants: 4,
     numOfReplies: 175,
@@ -29,7 +29,7 @@ module.exports = () => (
   },
   {
     postId: 3,
-    postTitle: 'Top Specialities in Tech',
+    title: 'Top Specialities in Tech',
     postConent: '',
     participantsInitials: 'K, M, L, S, S.A',
     numOfParticipants: 5,
@@ -43,7 +43,7 @@ module.exports = () => (
   },
   {
     postId: 4,
-    postTitle: 'My First Project EVER! (Share and Discuss)',
+    title: 'My First Project EVER! (Share and Discuss)',
     postConent: '',
     participantsInitials: 'M, K, A, B, T, D, L',
     numOfParticipants: 7,
@@ -57,8 +57,8 @@ module.exports = () => (
   },
   {
     postId: 5,
-    postTitle: 'AMA Forum',
-    postContent: '',
+    title: 'AMA Forum',
+    content: '',
     participantsInitials: 'M, K, D, B, S',
     numOfParticipants: 5,
     numOfReplies: 12,

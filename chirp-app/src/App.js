@@ -1,5 +1,3 @@
-// import axios from 'axios';
-// import UUID from 'react-uuid';
 import React from 'react';
 import { Route } from 'react-router-dom';
 import landingPage from './components/Landing-page/landing-page';
@@ -13,33 +11,35 @@ class App extends React.Component {
   static contextType = chirpContext;
   state = {
     posts: [
-      {
-        postId: 2,
-        postTitle: '26 Days of X-mas?!',
-        postContent: '',
-        participantsInitials: 'M, K, T, L',
-        numOfParticipants: 4,
-        numOfReplies: 175,
-        replies: [{
-          replyId: 1,
-          title: 'Karen',
-          content: 'That would be great, I wish this holiday was longer!!'
-        }],
-        timeOpen: '3 weeks'
-      },
+
     ]
   }
 
   componentDidMount() {
-    fetch(`${API_URL}/posts`).then(res => res.json()).then(data => this.setState({ posts: data }))
+    fetch(`${API_URL}/posts`)
+      .then(res => res.json())
+      // .then(data => this.setState({ posts: data }))
+      // 
+      .then((posts) => {
+        fetch(`${API_URL}/replies`)
+          .then(res => res.json())
+          .then(replies => {
+            replies.forEach(reply => {
+              const post = posts.find(post => post.id === reply.postId)
+              post.replies = post.replies || []
+              post.replies.push(reply)
+            })
+            this.setState({ posts })
+          })
+      })
   }
 
 
-  createNewPost = (id, postTitle, postContent) => {
+  createNewPost = (id, title, content) => {
     const newPost = {
-      postId: id,
-      postTitle: postTitle,
-      postContent: postContent,
+      id,
+      title,
+      content,
       participantsInitials: '',
       numOfParticipants: 0,
       numOfReplies: 0, //increment based off addReply for loop... || map iterates through and use counter?
@@ -57,7 +57,6 @@ class App extends React.Component {
       }
     })
   }
-
   // finding matching posts with prevState, editing it dynamically with whatever the user inputs and then giving it back to state
   addReply = (postId, content) => {
     const newReply = {
@@ -67,9 +66,12 @@ class App extends React.Component {
     }
     this.setState((prevState) => {
       // finds the post with matching id goes into that post's reply, reconstructing new object within array to account for other properties reply has
+      console.log('prevState:', prevState)
       const originalPosts = [...prevState.posts];
-      let matchingPost = originalPosts.find(post => post.postId === postId);
-      console.log(matchingPost)
+      // console.log(originalPosts, postId)
+
+      let matchingPost = originalPosts.find(post => post.id === postId);
+      console.log('matching post variable:', matchingPost)
       // add new reply to matching post
       matchingPost.replies.push(newReply);
       return {
@@ -77,14 +79,15 @@ class App extends React.Component {
       }
     })
   }
+  // not getting to addReply...something wrong with handler not allowing user input
 
   // patch
-  handleEditReply = (postId, replyId, reply, replyTitle) => {
-    console.log(this.state.replies)
+  handleEditReply = (postId, id, reply, replyTitle) => {
+    console.log('replies state:', this.state.replies)
     this.setState(prevState =>
       // exact reply to change
-      prevState.posts[postId - 1].replies[replyId - 1] = {
-        replyId: replyId,
+      prevState.posts[postId - 1].replies[id - 1] = {
+        id,
         title: replyTitle,
         content: reply
       }
@@ -92,12 +95,19 @@ class App extends React.Component {
   }
 
   // delete
-  handleDeleteReply = (postId, replyId) => {
-    this.setState(prevState => {
-      delete prevState.posts[postId - 1].replies[replyId - 1]
-      return prevState
-    }
-    )
+  handleDeleteReply = (id, replyId) => {
+    // find the right post
+    let matchingPost = this.state.posts.find(post => post.id === id);
+    // find matching reply
+    let replyIndex = matchingPost.replies.findIndex(reply => reply.replyId === replyId);
+    // splice out reply from that post
+    matchingPost.replies.splice(replyIndex, 1)
+    // splice post back into array
+    let newPosts = [...this.state.posts]
+    let matchingPostIndex = this.state.posts.findIndex(post => post.id === id);
+    newPosts.splice(matchingPostIndex, 1, matchingPost)
+
+    this.setState({ posts: newPosts })
   }
 
   render() {
@@ -158,8 +168,8 @@ Store data in DB
   //   axios.post('/posts', {
   //     data: {
   //       postId: UUID,
-  //       postTitle: postTitle,
-  //       postContent: postContent
+  //       title: title,
+  //       content: content
   //     },
   //   })
   //   axios.get('/posts', {

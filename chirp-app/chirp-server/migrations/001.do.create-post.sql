@@ -1,5 +1,5 @@
 CREATE TABLE posts (
-  postId VARCHAR(36),
+  postid VARCHAR(36),
   title TEXT NOT NULL,
   content TEXT NOT NULL
 )
@@ -12,7 +12,7 @@ CREATE TABLE posts (
 
 -- Get migrations fixed
 -- Hit route in postman to see errors until fixed
--- Working Enpoint!
+-- Working Endpoint!
 -- 1.) Make router route, make service function to power it then get them to work in Postman
 -- 2.) Hook up real endpoints in your client, handlers and fetches
 

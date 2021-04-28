@@ -236,7 +236,6 @@ describe('Replies Endpoints', function () {
           const idToUpdate = 2
           const updateReply = {
             id: 'updated reply id',
-            title: 'updated reply title',
             content: 'updated reply content',
           }
           const expectedReply = {

@@ -7,6 +7,7 @@ import UUID from 'react-uuid';
 import { API_URL } from '../../config';
 
 class Post extends React.Component {
+  static contextType = chirpContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +16,11 @@ class Post extends React.Component {
       isEdited: false,
       isDeleted: false,
       isSaved: false,
+      content: '',
+      replies: {
+        title: '',
+        content: ''
+      }
     }
   }
   render() {
@@ -26,47 +32,16 @@ class Post extends React.Component {
       })
     }
 
-    // const toggleEdit = (e, replyId, replyTitle) => {
-    //   console.log(toggleEdit)
-    //   this.setState({
-    //     isEdited: true,
-    //     isReplying: false,
-    //     isDeleted: false,
-    //     replyToBeEdited: e.target.parentElement.previousElementSibling.innerText,
-    //     replyIdToBeEdited: replyId,
-    //     replyTitleToBeEdited: replyTitle
-    //   })
-    // }
-
     const handleTextareaEdit = (e) => {
       this.setState({ replyToBeEdited: e.target.value })
     }
 
     const toggleCancel = () => {
-      console.log(toggleCancel)
       this.setState({
         isEdited: false,
-        isReplying: false
+        isReplying: false,
       })
     }
-
-    // const handleChirp = () => {
-    //   // creating ui for reply
-    //   this.setState({
-    //     isReplying: true
-    //   })
-    // }
-
-    // const buildToggleDelete = (e, context, replyId) => {
-    //   if (!window.confirm('This reply will be deleted.')) return
-    //   this.setState({
-    //     // find reply that matches post && remove it
-    //     isDeleted: true,
-    //     isEdited: false,
-    //     isReplying: false,
-    //   })
-    //   context.deleteReply(post.id, replyId)
-    // }
 
     const buildHandleSave = (e, context) => {
       context.addReply(post.id, e.target.previousElementSibling.value);
@@ -78,100 +53,86 @@ class Post extends React.Component {
       this.setState({ isEdited: false })
     }
 
-    const handleFetchCreateReply = () => {
-      const createReply = {
+    const handleAddedReplyContent = (e) => {
+      this.setState({
+        content: e.target.innerText
+      })
+    }
+    // create reply; needs to attach to post by postId
+    const handleFetchCreateReply = (e) => {
+      e.preventDefault();
+      const reply = {
         id: UUID(),
-        postTitle: '',
-        postContent: '',
-        participantsInitials: '',
-        numOfParticipants: 0,
-        numOfReplies: 0,
-        replies: [{
-          replyId: UUID(),
-          title: this.state.replies.title,
-          content: this.state.replies.content,
-        }],
-        timeOpen: 'One minute ago'
+        title: this.state.replies.title,
+        content: this.state.replies.content,
+        postId: this.props.post.id
       }
-      let data = { createReply }
       fetch(`${API_URL}/replies`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(reply)
       }).then(res => {
         if (!res.ok) {
           throw new Error(res.status)
         }
         return res.json()
-      }).catch(error => this.setState({ error }
-      )).then(this.context.addReply(this.state.postId, this.state.postContent)
-      )
+      })//.catch(error => this.setState({ error }))
+        .then(this.context.addReply(this.props.post.id, this.state.content)
+        )
     }
 
-    const handleFetchEditReply = () => {
-      const editReply = {
-        id: UUID(),
-        postTitle: this.state.postTitle,
-        postContent: this.state.postContent,
-        participantsInitials: '',
-        numOfParticipants: 0,
-        numOfReplies: 0,
-        replies: [{
-          replyId: UUID(),
-          title: this.state.title,
-          content: this.state.content,
-        }],
-        timeOpen: 'One minute ago'
+    const handleFetchEditReply = (replyId) => {
+      const replies = {
+        replyId: UUID(),
+        title: this.state.title,
+        content: this.state.content,
       }
-      fetch(`${API_URL}/replies`, {
+      fetch(`${API_URL}/replies/${replyId}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json'
         },
-        body: JSON.stringify(editReply)
+        body: JSON.stringify(replies)
       }).then(res => {
         if (!res.ok) {
           throw new Error(res.status)
         }
         return res.json()
-      }).catch(error => this.setState({ error }
-      )).then(() => this.context.editReply(this.state.id, this.state.replyId, this.state.replies.title, this.state.replies.content)
-      )
+      })//.catch(error => this.setState({ error }
+        .then(() => this.context.editReply(this.state.id, this.state.replyId, this.state.replies.title, this.state.replies.content)
+        )
     }
 
-    const handleFetchDeleteReply = () => {
-      const deletedReply = {
-        id: this.state.postId,
-        replies: [{
-          replyId: this.state.replyId,
-        }],
-        timeOpen: 'One minute ago'
-      }
-      fetch(`${API_URL}/replies`, {
+    const handleFetchDeleteReply = (replyId) => {
+      fetch(`${API_URL}/replies/${replyId}`, {
         method: 'DELETE',
         headers: {
           'content-type': 'application/json'
-        },
-        body: JSON.stringify(deletedReply)
-      }).then(res => {
-        if (!res.ok) {
-          throw new Error(res.status)
         }
-        return res.json()
-      }).catch(error => this.setState({ error }
-      )).then(() => this.context.deleteReply(this.state.postId, this.state.replyId)
-      )
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(res.status)
+          }
+          return res.json()
+        })
+        .catch(error => this.setState({ error }
+        ))
+        .then(() => this.context.deleteReply(this.props.post.id, this.state.replyId)
+        )
+        .then(this.setState({ toggleThread: null }))
     }
 
     return (
       <chirpContext.Consumer>
         {context => {
+          console.log(post)
           return (
             < tbody key={post.id}>
               <tr id="tr-threads">
-                <td>{post.postTitle}</td>
+                <td>{post.title}</td>
                 <td>{post.participantsInitials}</td>
                 <td>{post.numOfReplies}</td>
                 <td className="time-open-column">{post.timeOpen}</td>
@@ -181,12 +142,13 @@ class Post extends React.Component {
               {this.state.showDetails ?
                 <>
                   <tr>
-                    <td colSpan={6}>{post.postContent}
+                    <td colSpan={6}>{post.content}
                       <section></section>
                       {/* stateful logic to display textarea */}
                       {this.state.isReplying ?
                         <>
-                          <textarea></textarea>
+                          {/* controlled input pattern */}
+                          <textarea value={this.state.content} onChange={handleAddedReplyContent}></textarea>
                           <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
                           <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
                         </> :
@@ -195,18 +157,19 @@ class Post extends React.Component {
                       }
                     </td>
                   </tr>
-                  <tr className="replies-section" key={post.replies.title}>
+                  <tr className="replies-section">
                     <td colSpan={6}>
                       {post.replies.map(reply => {
+                        console.log(reply)
                         return (
                           <>
                             {!this.state.isEdited &&
-                              <section className="reply-section">{reply.content}</section>
+                              <section className="reply-section">{reply.content || 'There was no reply.'}</section>
                             }
                             <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <SiteButton onClick={handleFetchEditReply()}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
-                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={(e) => handleFetchDeleteReply(e)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
+                              {!this.state.isEdited && <SiteButton onClick={() => handleFetchEditReply(reply.id)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
+                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={() => handleFetchDeleteReply(reply.id)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
                             </div>
                           </>
                         )
