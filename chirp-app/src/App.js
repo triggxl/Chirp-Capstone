@@ -81,17 +81,20 @@ class App extends React.Component {
   }
   // not getting to addReply...something wrong with handler not allowing user input
 
-  // patch
-  handleEditReply = (postId, id, reply, replyTitle) => {
+  // put
+  handleEditReply = (id, replyId) => {
     console.log('replies state:', this.state.replies)
-    this.setState(prevState =>
-      // exact reply to change
-      prevState.posts[postId - 1].replies[id - 1] = {
-        id,
-        title: replyTitle,
-        content: reply
-      }
-    )
+    // find post
+    let matchingPost = this.state.posts.find(post => post.id === id);
+    // find index of reply
+    let replyIndex = matchingPost.replies.findIndex(reply => reply.replyId === replyId);
+    // create posts instance
+    let newPosts = [...this.state.posts]
+    // remove reply from matchingPost
+    matchingPost.replies.splice(replyIndex, 1)
+    // update with new
+    newPosts.splice(replyIndex, 1, matchingPost)
+    this.setState({ posts: newPosts })
   }
 
   // delete

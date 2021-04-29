@@ -90,7 +90,7 @@ class messageBoard extends React.Component {
             <tr id="table-row">
               <th>Title</th>
               {/* <th>Participants</th> */}
-              <th># of Messages in Thread</th>
+              {/* <th># of Messages in Thread</th> */}
               <th className="open-since-column" >Open Since</th>
             </tr>
           </thead>

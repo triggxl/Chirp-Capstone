@@ -72,5 +72,24 @@ repliesRouter
   .get((req, res, next) => {
     res.json(serializeReply(res.reply))
   })
+  .put(jsonParser, (req, res, next) => {
+    const { content, postId, id } = req.body;
+    // destructuring and creating new object with new keys server: client
+    const reply = { content, postid: postId, id };
+
+    for (const [key, value] of Object.entries(reply)) {
+      if (value == null) {
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request body` }
+        })
+      }
+    }
+    RepliesService.updateReplies(req.app.get('db'), id, content)
+      .then(reply => {
+        res
+          .json(serializeReply(reply))
+      })
+    // .catch(next)
+  })
 
 module.exports = repliesRouter;

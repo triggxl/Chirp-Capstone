@@ -59,11 +59,9 @@ class Post extends React.Component {
       })
     }
     // create reply; needs to attach to post by postId
-    const handleFetchCreateReply = (e) => {
-      e.preventDefault();
+    const handleFetchCreateReply = (replyId) => {
       const reply = {
         id: UUID(),
-        title: this.state.replies.title,
         content: this.state.replies.content,
         postId: this.props.post.id
       }
@@ -78,16 +76,16 @@ class Post extends React.Component {
           throw new Error(res.status)
         }
         return res.json()
-      })//.catch(error => this.setState({ error }))
+      })
         .then(this.context.addReply(this.props.post.id, this.state.content)
         )
     }
 
-    const handleFetchEditReply = (replyId) => {
+    const handleFetchEditReply = (replyId, postid) => {
       const replies = {
-        replyId: UUID(),
-        title: this.state.title,
+        id: replyId,
         content: this.state.content,
+        postid
       }
       fetch(`${API_URL}/replies/${replyId}`, {
         method: 'PUT',
@@ -101,7 +99,9 @@ class Post extends React.Component {
         }
         return res.json()
       })//.catch(error => this.setState({ error }
-        .then(() => this.context.editReply(this.state.id, this.state.replyId, this.state.replies.title, this.state.replies.content)
+        .then(() => {
+          this.context.editReply(replyId, this.state.content)
+        }
         )
     }
 
