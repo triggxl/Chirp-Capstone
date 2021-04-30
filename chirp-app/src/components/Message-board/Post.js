@@ -55,13 +55,14 @@ class Post extends React.Component {
 
     // const handleAddedReplyContent = (e) => {
     //   this.setState({
-    //     content: e.target.innerText
+    //     content: e.target.value
     //   })
     // }
+
     const handleFetchCreateReply = (replyId) => {
       const reply = {
         id: UUID(),
-        content: this.state.replies.content,
+        content: this.state.content,
         postId: this.props.post.id
       }
       console.log('reply: post.js 67', reply)
@@ -157,13 +158,13 @@ class Post extends React.Component {
                         <>
                           {/* controlled input pattern */}
                           <form id="create-reply-form" action="POST" onSubmit={(e) => handleFetchCreateReply(e)}>
-                            <textarea value={this.state.content}></textarea>
+                            <textarea onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} ></textarea>
                             <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
                             <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
                           </form>
                         </> :
                         // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                        <SiteButton onClick={(e) => handleFetchCreateReply(e)}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
+                        <SiteButton>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
                       }
 
                     </td>
@@ -175,7 +176,7 @@ class Post extends React.Component {
                         return (
                           <>
                             {!this.state.isEdited &&
-                              <section className="reply-section">{reply.content || 'There was no reply.'}</section>
+                              <section onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} className="reply-section">{reply.content || 'There was no reply.'}</section>
                             }
                             <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
