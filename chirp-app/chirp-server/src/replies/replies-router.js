@@ -19,7 +19,7 @@ repliesRouter
     const knexInstance = req.app.get('db')
     RepliesService.getAllReplies(knexInstance)
       .then(replies => {
-        console.log(replies)
+        // console.log(replies)
         res.json(replies.map(serializeReply))
       })
       .catch(next)
@@ -74,6 +74,7 @@ repliesRouter
   })
   .put(jsonParser, (req, res, next) => {
     const { content, postId, id } = req.body;
+    console.log('postid:', req.body.postId)
     // destructuring and creating new object with new keys server: client
     const reply = { content, postid: postId, id };
 
@@ -84,7 +85,7 @@ repliesRouter
         })
       }
     }
-    RepliesService.updateReplies(req.app.get('db'), id, content)
+    RepliesService.updateReplies(req.app.get('db'), id, content, postid)
       .then(reply => {
         res
           .json(serializeReply(reply))

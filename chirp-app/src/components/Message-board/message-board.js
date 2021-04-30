@@ -27,7 +27,7 @@ class messageBoard extends React.Component {
     }
 
 
-    const handleFetchFormCreatePost = (e) => {
+    const handleFetchCreatePost = (e) => {
       e.preventDefault();
       const newPost = {
         id: UUID(),
@@ -73,7 +73,7 @@ class messageBoard extends React.Component {
             </div>
             <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton>
           </div> :
-          <form className="form-inline" onSubmit={handleFetchFormCreatePost}>
+          <form className="form-inline" onSubmit={handleFetchCreatePost}>
             {/* eslint-disable-next-line */}
             <label className="ptl">Title:</label>
             {/* eslint-disable-next-line */}

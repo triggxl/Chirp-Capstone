@@ -82,7 +82,7 @@ class App extends React.Component {
   // not getting to addReply...something wrong with handler not allowing user input
 
   // put
-  handleEditReply = (id, replyId) => {
+  handleEditReply = (replyId, content, id) => {
     console.log('replies state:', this.state.replies)
     // find post
     let matchingPost = this.state.posts.find(post => post.id === id);

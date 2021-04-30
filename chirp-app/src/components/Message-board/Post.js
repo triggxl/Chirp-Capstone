@@ -53,39 +53,46 @@ class Post extends React.Component {
       this.setState({ isEdited: false })
     }
 
-    const handleAddedReplyContent = (e) => {
-      this.setState({
-        content: e.target.innerText
-      })
-    }
-    // create reply; needs to attach to post by postId
+    // const handleAddedReplyContent = (e) => {
+    //   this.setState({
+    //     content: e.target.innerText
+    //   })
+    // }
     const handleFetchCreateReply = (replyId) => {
       const reply = {
         id: UUID(),
         content: this.state.replies.content,
         postId: this.props.post.id
       }
-      fetch(`${API_URL}/replies`, {
+      console.log('reply: post.js 67', reply)
+      fetch(`${API_URL}/replies/${replyId}`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json'
         },
         body: JSON.stringify(reply)
-      }).then(res => {
-        if (!res.ok) {
-          throw new Error(res.status)
-        }
-        return res.json()
       })
+        // .then(res => {
+        //   if (!res.ok) {
+        //     throw new Error(res.status)
+        //   }
+        //   return res.json()
+        // })
+        .then(res => res.json())
+        .then(data => console.log('success', data))
         .then(this.context.addReply(this.props.post.id, this.state.content)
         )
+        .catch((error) => {
+          console.error('error:', error.message)
+        })
     }
 
     const handleFetchEditReply = (replyId, postid) => {
+      console.log(this.props.post.id)
       const replies = {
         id: replyId,
         content: this.state.content,
-        postid
+        postid: this.props.post.id
       }
       fetch(`${API_URL}/replies/${replyId}`, {
         method: 'PUT',
@@ -93,14 +100,15 @@ class Post extends React.Component {
           'content-type': 'application/json'
         },
         body: JSON.stringify(replies)
-      }).then(res => {
-        if (!res.ok) {
-          throw new Error(res.status)
-        }
-        return res.json()
-      })//.catch(error => this.setState({ error }
+      })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(res.status)
+          }
+          return res.json()
+        })
         .then(() => {
-          this.context.editReply(replyId, this.state.content)
+          this.context.editReply(replyId, this.state.content, this.props.post.id)
         }
         )
     }
@@ -148,13 +156,16 @@ class Post extends React.Component {
                       {this.state.isReplying ?
                         <>
                           {/* controlled input pattern */}
-                          <textarea value={this.state.content} onChange={handleAddedReplyContent}></textarea>
-                          <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                          <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
+                          <form id="create-reply-form" action="POST" onSubmit={(e) => handleFetchCreateReply(e)}>
+                            <textarea value={this.state.content}></textarea>
+                            <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
+                            <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
+                          </form>
                         </> :
                         // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
                         <SiteButton onClick={(e) => handleFetchCreateReply(e)}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
                       }
+
                     </td>
                   </tr>
                   <tr className="replies-section">

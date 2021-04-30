@@ -21,17 +21,18 @@ const RepliesService = {
       .first()
   },
 
+  updateReplies(knex, id, content, postid) {
+    return knex('replies')
+      .where({ id, postid })
+      .update({ content })
+  },
+
   deleteReplies(knex, id) {
     return knex('replies')
       .where({ id })
       .delete()
   },
 
-  updateReplies(knex, id, content, postid) {
-    return knex('replies')
-      .where({ id })
-      .update({ content, postid })
-  },
 }
 
 module.exports = RepliesService;
