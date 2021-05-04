@@ -86,14 +86,17 @@ class App extends React.Component {
     console.log('replies state:', this.state.replies)
     // find post
     let matchingPost = this.state.posts.find(post => post.id === id);
+    let matchingPostIndex = this.state.posts.findIndex(post => post.id === id);
     // find index of reply
     let replyIndex = matchingPost.replies.findIndex(reply => reply.replyId === replyId);
+    // get reply with idx
+    const reply = { ...matchingPost.replies[replyIndex] }
+    reply.content = content
+    matchingPost.replies.splice(replyIndex, 1, reply)
     // create posts instance
     let newPosts = [...this.state.posts]
-    // remove reply from matchingPost
-    matchingPost.replies.splice(replyIndex, 1)
     // update with new
-    newPosts.splice(replyIndex, 1, matchingPost)
+    newPosts.splice(matchingPostIndex, 1, matchingPost)
     this.setState({ posts: newPosts })
   }
 

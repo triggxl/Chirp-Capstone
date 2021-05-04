@@ -12,15 +12,13 @@ class Post extends React.Component {
     super(props);
     this.state = {
       showDetails: false,
-      isReplying: false,
+      showReply: false,
       isEdited: false,
       isDeleted: false,
       isSaved: false,
+      isReplying: false,
       content: '',
-      replies: {
-        title: '',
-        content: ''
-      }
+      title: '',
     }
   }
   render() {
@@ -32,8 +30,16 @@ class Post extends React.Component {
       })
     }
 
+    const toggleEdit = () => {
+      this.setState({
+        isEdited: true,
+        isReplying: false,
+        isDeleted: false,
+      })
+    }
+
     const handleTextareaEdit = (e) => {
-      this.setState({ replyToBeEdited: e.target.value })
+      this.setState({ content: e.target.value })
     }
 
     const toggleCancel = () => {
@@ -43,15 +49,25 @@ class Post extends React.Component {
       })
     }
 
-    const buildHandleSave = (e, context) => {
-      context.addReply(post.id, e.target.previousElementSibling.value);
-      this.setState({ isReplying: false })
+    const handleChirp = () => {
+      // creating ui for reply
+      this.setState({
+        isReplying: true
+      })
     }
 
-    const buildHandleSaveOnEdit = (e, context) => {
-      context.editReply(post.id, this.state.replyIdToBeEdited, this.state.replyToBeEdited, this.state.replyTitleToBeEdited)
-      this.setState({ isEdited: false })
-    }
+    // const buildHandleSave = (e, context) => {
+    //   context.addReply(post.id, e.target.previousElementSibling.value);
+    //   this.setState({ isReplying: false })
+    // }
+
+    // const buildHandleSaveOnEdit = (replyId, content, postId) => {
+    //   handleFetchEditReply().then(() => {
+    //     // this.context.editReply(replyId, content, postId)
+
+    //   }
+    //   )
+    // }
 
     // const handleAddedReplyContent = (e) => {
     //   this.setState({
@@ -88,14 +104,14 @@ class Post extends React.Component {
         })
     }
 
-    const handleFetchEditReply = (replyId, postid) => {
+    const handleFetchEditReply = (replyId) => {
       console.log(this.props.post.id)
       const replies = {
         id: replyId,
         content: this.state.content,
         postid: this.props.post.id
       }
-      fetch(`${API_URL}/replies/${replyId}`, {
+      return fetch(`${API_URL}/replies/${replyId}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json'
@@ -110,6 +126,7 @@ class Post extends React.Component {
         })
         .then(() => {
           this.context.editReply(replyId, this.state.content, this.props.post.id)
+          this.setState({ isEdited: false })
         }
         )
     }
@@ -129,7 +146,7 @@ class Post extends React.Component {
         })
         .catch(error => this.setState({ error }
         ))
-        .then(() => this.context.deleteReply(this.props.post.id, this.state.replyId)
+        .then(() => this.context.deleteReply(this.props.post.id, replyId)
         )
         .then(this.setState({ toggleThread: null }))
     }
@@ -150,57 +167,56 @@ class Post extends React.Component {
 
               {this.state.showDetails ?
                 <>
-                  <tr>
-                    <td colSpan={6}>{post.content}
-                      <section></section>
-                      {/* stateful logic to display textarea */}
-                      {this.state.isReplying ?
-                        <>
-                          {/* controlled input pattern */}
-                          <form id="create-reply-form" action="POST" onSubmit={(e) => handleFetchCreateReply(e)}>
-                            <textarea onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} ></textarea>
-                            <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                            <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
-                          </form>
-                        </> :
-                        // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                        <SiteButton>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
-                      }
+                  {post.replies.map(reply => {
+                    console.log(reply)
+                    return (
+                      <>
+                        <tr>
+                          <td colSpan={6}>{post.content}
+                            <section></section>
+                            {/* stateful logic to display textarea */}
+                            {this.state.showReply ?
+                              <>
+                                {/* controlled input pattern */}
+                                <form id="create-reply-form" action="POST" onSubmit={(e) => handleFetchCreateReply(e)}>
+                                  <textarea onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} ></textarea>
+                                  <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
+                                  <SiteButton onClick={(e) => handleFetchEditReply(reply.replyId)}>Save</SiteButton>
+                                </form>
+                              </> :
+                              // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
+                              <SiteButton onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
+                            }
 
-                    </td>
-                  </tr>
-                  <tr className="replies-section">
-                    <td colSpan={6}>
-                      {post.replies.map(reply => {
-                        console.log(reply)
-                        return (
-                          <>
+                          </td>
+                        </tr>
+                        <tr className="replies-section">
+                          <td colSpan={6}>
                             {!this.state.isEdited &&
                               <section onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} className="reply-section">{reply.content || 'There was no reply.'}</section>
                             }
                             <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <SiteButton onClick={() => handleFetchEditReply(reply.id)}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
+                              {!this.state.isEdited && <SiteButton onClick={toggleEdit}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
                               {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={() => handleFetchDeleteReply(reply.id)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
                             </div>
-                          </>
-                        )
-                      })}
-                    </td>
-                  </tr>
-                  {this.state.isEdited ? (
-                    <tr>
-                      <td colSpan={6}>
-                        {/* siblings are vertical */}
-                        <textarea value={this.state.replyToBeEdited} onChange={handleTextareaEdit} />
-                        <div>
-                          <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                          <SiteButton onClick={(e) => buildHandleSaveOnEdit(e, context)}>Save</SiteButton>
-                        </div>
-                      </td>
-                    </tr>
-                  ) : null
-                  }
+                          </td>
+                        </tr>
+                        {this.state.isEdited && (
+                          <tr className="edit-reply-section">
+                            <td colSpan={6}>
+                              {/* siblings are vertical */}
+                              <textarea value={this.state.content} onChange={handleTextareaEdit} />
+                              <div>
+                                <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
+                                <SiteButton onClick={(e) => handleFetchEditReply(reply.id)}>Save</SiteButton>
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </>
+                    )
+                  })}
                 </> : null
               }
             </tbody>
@@ -213,8 +229,6 @@ class Post extends React.Component {
 }
 
 export default Post;
-
-
 
 // handling logic for updating reply (moved functionalty over to app and then called editReply fx within Post)
 // const handleSave = (e) => {
