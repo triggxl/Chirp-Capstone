@@ -91,7 +91,7 @@ class messageBoard extends React.Component {
               <th>Title</th>
               {/* <th>Participants</th> */}
               {/* <th># of Messages in Thread</th> */}
-              <th className="open-since-column" >Open Since</th>
+              {/* <th className="open-since-column" >Open Since</th> */}
             </tr>
           </thead>
           {this.context.posts.map(post => {

@@ -5,10 +5,15 @@
 .replies-section {
   border: 2px dotted black;
   text-align: center;
+  margin: 10px;
 }
 
 #tr-threads {
   border: 2px solid black;
+}
+
+.reply-textarea {
+  display: block;
 }
 
 @media only screen and (max-width: 637) {

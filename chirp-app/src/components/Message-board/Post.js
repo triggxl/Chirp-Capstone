@@ -1,5 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import chirpContext from '../../chirp-context/chirpContext';
 import './Post.css';
 import SiteButton from '../site-button';
@@ -12,7 +11,6 @@ class Post extends React.Component {
     super(props);
     this.state = {
       showDetails: false,
-      showReply: false,
       isEdited: false,
       isDeleted: false,
       isSaved: false,
@@ -56,32 +54,26 @@ class Post extends React.Component {
       })
     }
 
-    // const buildHandleSave = (e, context) => {
-    //   context.addReply(post.id, e.target.previousElementSibling.value);
-    //   this.setState({ isReplying: false })
-    // }
+    const buildHandleSave = (e, context) => {
+      context.addReply(post.id, e.target.previousElementSibling.value);
+      this.setState({ isReplying: false })
+    }
 
-    // const buildHandleSaveOnEdit = (replyId, content, postId) => {
-    //   handleFetchEditReply().then(() => {
-    //     // this.context.editReply(replyId, content, postId)
+    const handleAddedReplyContent = (e) => {
+      this.setState({
+        content: e.target.value
+      })
+    }
 
-    //   }
-    //   )
-    // }
-
-    // const handleAddedReplyContent = (e) => {
-    //   this.setState({
-    //     content: e.target.value
-    //   })
-    // }
-
-    const handleFetchCreateReply = (replyId) => {
+    const handleFetchCreateReply = (e, replyId) => {
+      console.log('replyId:', replyId)
+      e.preventDefault()
       const reply = {
         id: UUID(),
         content: this.state.content,
         postId: this.props.post.id
       }
-      console.log('reply: post.js 67', reply)
+      console.log('content:', this.state.content)
       fetch(`${API_URL}/replies/${replyId}`, {
         method: 'POST',
         headers: {
@@ -97,7 +89,8 @@ class Post extends React.Component {
         // })
         .then(res => res.json())
         .then(data => console.log('success', data))
-        .then(this.context.addReply(this.props.post.id, this.state.content)
+        .then(
+          this.context.addReply(replyId, this.props.post.id, this.state.content),
         )
         .catch((error) => {
           console.error('error:', error.message)
@@ -154,7 +147,6 @@ class Post extends React.Component {
     return (
       <chirpContext.Consumer>
         {context => {
-          console.log(post)
           return (
             < tbody key={post.id}>
               <tr id="tr-threads">
@@ -168,26 +160,25 @@ class Post extends React.Component {
               {this.state.showDetails ?
                 <>
                   {post.replies.map(reply => {
-                    console.log(reply)
                     return (
                       <>
                         <tr>
                           <td colSpan={6}>{post.content}
                             <section></section>
                             {/* stateful logic to display textarea */}
-                            {this.state.showReply ?
+                            {this.state.isReplying ?
                               <>
-                                {/* controlled input pattern */}
-                                <form id="create-reply-form" action="POST" onSubmit={(e) => handleFetchCreateReply(e)}>
-                                  <textarea onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} ></textarea>
+                                <p>Submit a reply:</p>
+                                {/* 1.) Click on 'Chirp' 2.) enter reply in textarea 3.) 'Save' new reply*/}
+                                <form id="create-reply-form" onSubmit={(e) => handleFetchCreateReply(e, reply.replyId)}>
+                                  <textarea className="reply-textarea" value={this.state.content} onChange={handleAddedReplyContent} ></textarea>
                                   <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                                  <SiteButton onClick={(e) => handleFetchEditReply(reply.replyId)}>Save</SiteButton>
+                                  <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
                                 </form>
                               </> :
                               // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                              <SiteButton onClick={handleChirp}>Chirp <FontAwesomeIcon icon={['fas', 'blog']} /></SiteButton>
+                              <SiteButton onClick={handleChirp}>Chirp</SiteButton>
                             }
-
                           </td>
                         </tr>
                         <tr className="replies-section">
@@ -197,8 +188,8 @@ class Post extends React.Component {
                             }
                             <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <SiteButton onClick={toggleEdit}>Edit <FontAwesomeIcon icon={['fas', 'edit']} /> </SiteButton>}
-                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={() => handleFetchDeleteReply(reply.id)}>Drop <FontAwesomeIcon icon={['fas', 'trash']} /></SiteButton>}
+                              {!this.state.isEdited && <SiteButton onClick={toggleEdit}>Edit</SiteButton>}
+                              {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={() => handleFetchDeleteReply(reply.id)}>Drop</SiteButton>}
                             </div>
                           </td>
                         </tr>

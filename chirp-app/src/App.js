@@ -58,20 +58,20 @@ class App extends React.Component {
     })
   }
   // finding matching posts with prevState, editing it dynamically with whatever the user inputs and then giving it back to state
-  addReply = (postId, content) => {
+  addReply = (replyId, postid, content) => {
     const newReply = {
-      replyId: 1,
+      replyId: replyId,
       title: '',
       content: content
     }
     this.setState((prevState) => {
       // finds the post with matching id goes into that post's reply, reconstructing new object within array to account for other properties reply has
-      console.log('prevState:', prevState)
+      // console.log('prevState:', prevState)
       const originalPosts = [...prevState.posts];
       // console.log(originalPosts, postId)
 
-      let matchingPost = originalPosts.find(post => post.id === postId);
-      console.log('matching post variable:', matchingPost)
+      let matchingPost = originalPosts.find(post => post.postid === postid);
+      console.log('matching post:', matchingPost)
       // add new reply to matching post
       matchingPost.replies.push(newReply);
       return {
