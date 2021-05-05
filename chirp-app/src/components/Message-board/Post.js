@@ -9,6 +9,7 @@ class Post extends React.Component {
   static contextType = chirpContext;
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
     this.state = {
       showDetails: false,
       isEdited: false,
@@ -54,10 +55,10 @@ class Post extends React.Component {
       })
     }
 
-    const buildHandleSave = (e, context) => {
-      context.addReply(post.id, e.target.previousElementSibling.value);
-      this.setState({ isReplying: false })
-    }
+    // const buildHandleSave = (e, context) => {
+    //   context.addReply(post.id, this.state.content);
+    //   this.setState({ isReplying: false })
+    // }
 
     const handleAddedReplyContent = (e) => {
       this.setState({
@@ -66,8 +67,8 @@ class Post extends React.Component {
     }
 
     const handleFetchCreateReply = (e, replyId) => {
-      console.log('replyId:', replyId)
       e.preventDefault()
+      console.log('replyId:', replyId)
       const reply = {
         id: UUID(),
         content: this.state.content,
@@ -88,16 +89,19 @@ class Post extends React.Component {
         //   return res.json()
         // })
         .then(res => res.json())
-        .then(data => console.log('success', data))
-        .then(
-          this.context.addReply(replyId, this.props.post.id, this.state.content),
+        // .then(data => console.log('success', data))
+        .then(() => {
+          debugger
+          this.context.addReply(replyId, this.props.post.id, this.state.content)
+        }
         )
         .catch((error) => {
           console.error('error:', error.message)
         })
     }
 
-    const handleFetchEditReply = (replyId) => {
+    const handleFetchEditReply = (e, replyId) => {
+      e.prevetDefault()
       console.log(this.props.post.id)
       const replies = {
         id: replyId,
@@ -168,12 +172,12 @@ class Post extends React.Component {
                             {/* stateful logic to display textarea */}
                             {this.state.isReplying ?
                               <>
-                                <p>Submit a reply:</p>
+                                <p>Submit Reply:</p>
                                 {/* 1.) Click on 'Chirp' 2.) enter reply in textarea 3.) 'Save' new reply*/}
-                                <form id="create-reply-form" onSubmit={(e) => handleFetchCreateReply(e, reply.replyId)}>
+                                <form id="create-reply-form" onSubmit={(e) => handleFetchCreateReply(e, reply.id)}>
                                   <textarea className="reply-textarea" value={this.state.content} onChange={handleAddedReplyContent} ></textarea>
                                   <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                                  <SiteButton onClick={(e) => buildHandleSave(e, context)}>Save</SiteButton>
+                                  <SiteButton>Save</SiteButton>
                                 </form>
                               </> :
                               // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
@@ -200,7 +204,7 @@ class Post extends React.Component {
                               <textarea value={this.state.content} onChange={handleTextareaEdit} />
                               <div>
                                 <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                                <SiteButton onClick={(e) => handleFetchEditReply(reply.id)}>Save</SiteButton>
+                                <SiteButton onClick={(e) => handleFetchEditReply(e, reply.id)}>Save</SiteButton>
                               </div>
                             </td>
                           </tr>

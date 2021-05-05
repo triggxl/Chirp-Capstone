@@ -55,24 +55,6 @@ repliesRouter
 
 repliesRouter
   .route('/:reply_id')
-  .delete((req, res, next) => {
-    RepliesService.deleteReplies(
-      req.app.get('db'),
-      req.params.reply_id
-    )
-      .then(reply => {
-        if (!reply) {
-          return res.status(404).json({
-            error: { message: `Reply doesn't exist` }
-          })
-        }
-        res.json(reply)
-      })
-      .catch(next)
-  })
-  .get((req, res, next) => {
-    res.json(serializeReply(res.reply))
-  })
   .put(jsonParser, (req, res, next) => {
     const { content, postid, id } = req.body;
     console.log('postid:', req.body.postid)
@@ -93,5 +75,34 @@ repliesRouter
       })
     // .catch(next)
   })
+  .delete((req, res, next) => {
+    RepliesService.deleteReplies(
+      req.app.get('db'),
+      req.params.reply_id
+    )
+      .then(reply => {
+        if (!reply) {
+          return res.status(404).json({
+            error: { message: `Reply doesn't exist` }
+          })
+        }
+        res.json(reply)
+      })
+      .catch(next)
+  })
+  .get((req, res, next) => {
+    res.json(serializeReply(res.reply))
+  })
+
 
 module.exports = repliesRouter;
+
+/*
+router:
+.route
+.httpVerb
+  req.body
+  CRUD method variable using req.body (ex: get)
+.then(error checking)
+.then(res.status.json..)
+ */
