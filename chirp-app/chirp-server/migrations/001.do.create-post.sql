@@ -1,5 +1,5 @@
 CREATE TABLE posts (
-  postid VARCHAR(36),
+  id VARCHAR(36),
   title TEXT NOT NULL,
   content TEXT NOT NULL
 )

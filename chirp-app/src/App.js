@@ -58,9 +58,9 @@ class App extends React.Component {
     })
   }
   // finding matching posts with prevState, editing it dynamically with whatever the user inputs and then giving it back to state
-  addReply = (replyId, postid, content) => {
+  addReply = (id, postid, content) => {
     const newReply = {
-      replyId,
+      id,
       title: '',
       content,
       postid
@@ -85,12 +85,12 @@ class App extends React.Component {
 
   // put
   handleEditReply = (replyId, content, id) => {
-    console.log('replies state:', this.state.replies)
+    // console.log('replies state:', this.state.replies)
     // find post
     let matchingPost = this.state.posts.find(post => post.id === id);
     let matchingPostIndex = this.state.posts.findIndex(post => post.id === id);
     // find index of reply
-    let replyIndex = matchingPost.replies.findIndex(reply => reply.replyId === replyId);
+    let replyIndex = matchingPost.replies.findIndex(reply => reply.id === replyId);
     // get reply with idx
     const reply = { ...matchingPost.replies[replyIndex] }
     reply.content = content
@@ -107,7 +107,7 @@ class App extends React.Component {
     // find the right post
     let matchingPost = this.state.posts.find(post => post.id === id);
     // find matching reply
-    let replyIndex = matchingPost.replies.findIndex(reply => reply.replyId === replyId);
+    let replyIndex = matchingPost.replies.findIndex(reply => reply.id === replyId);
     // splice out reply from that post
     matchingPost.replies.splice(replyIndex, 1)
     // splice post back into array

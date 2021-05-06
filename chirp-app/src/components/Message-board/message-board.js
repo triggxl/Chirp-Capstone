@@ -62,13 +62,12 @@ class messageBoard extends React.Component {
         {/* <img src="search-bar-icon" alt="search bar icon for message board" /> */}
         <div id="mb-links">
           <Link to="/" key={'/'}>Home</Link>
-          <Link to="/profile" key={'/profile'}>My Profile</Link>
         </div>
         {!this.state.showAddForm ?
           <div>
             <div id="user-instructions">
               <h3>Chirp Instructions:</h3>
-              <p>1.) Click one of the arrows to the right to view a post OR Create your own!</p>
+              <p>1.) Click one of the down arrows to the right to view a post, OR Create your own!</p>
               <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!) </p>
             </div>
             <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton>

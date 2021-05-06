@@ -1,6 +1,7 @@
-INSERT INTO posts (postId, title, content)
-VALUES 
-('aaaa', 'First Post!!', 'What do I have to say, the sky is the limit...!' ),
-('bbbb', 'Second Post!!', 'Tell me what you see in the clouds...' );
+INSERT INTO posts
+  (id, title, content)
+VALUES
+  ('aaa', 'First Post!!', 'What do I have to say, the sky is the limit...!' ),
+  ('bbb', 'I am second!!', 'Tell me what you see in the clouds...' );
 
 

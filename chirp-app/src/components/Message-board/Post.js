@@ -16,6 +16,7 @@ class Post extends React.Component {
       isDeleted: false,
       isSaved: false,
       isReplying: false,
+      replyIdToBeEdited: null,
       content: '',
       title: '',
     }
@@ -29,8 +30,9 @@ class Post extends React.Component {
       })
     }
 
-    const toggleEdit = () => {
+    const toggleEdit = (replyId) => {
       this.setState({
+        replyIdToBeEdited: replyId,
         isEdited: true,
         isReplying: false,
         isDeleted: false,
@@ -66,16 +68,15 @@ class Post extends React.Component {
       })
     }
 
-    const handleFetchCreateReply = (e, replyId) => {
+    const handleFetchCreateReply = (e) => {
       e.preventDefault()
-      console.log('replyId:', replyId)
       const reply = {
         id: UUID(),
         content: this.state.content,
         postId: this.props.post.id
       }
       console.log('content:', this.state.content)
-      fetch(`${API_URL}/replies/${replyId}`, {
+      fetch(`${API_URL}/replies`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json'
@@ -91,8 +92,11 @@ class Post extends React.Component {
         .then(res => res.json())
         // .then(data => console.log('success', data))
         .then(() => {
-          debugger
-          this.context.addReply(replyId, this.props.post.id, this.state.content)
+          this.context.addReply(reply.id, this.props.post.id, this.state.content)
+          this.setState({
+            isReplying: false,
+            content: ''
+          })
         }
         )
         .catch((error) => {
@@ -100,11 +104,10 @@ class Post extends React.Component {
         })
     }
 
-    const handleFetchEditReply = (e, replyId) => {
-      e.prevetDefault()
+    const handleFetchEditReply = (replyId) => {
       console.log(this.props.post.id)
       const replies = {
-        id: replyId,
+        id: this.state.replyIdToBeEdited,
         content: this.state.content,
         postid: this.props.post.id
       }
@@ -123,7 +126,10 @@ class Post extends React.Component {
         })
         .then(() => {
           this.context.editReply(replyId, this.state.content, this.props.post.id)
-          this.setState({ isEdited: false })
+          this.setState({
+            isEdited: false,
+            content: ''
+          })
         }
         )
     }
@@ -148,68 +154,70 @@ class Post extends React.Component {
         .then(this.setState({ toggleThread: null }))
     }
 
+    const editedReply = post.replies.find(reply => reply.id === this.state.replyIdToBeEdited);
+    const editedText = this.state.content || (editedReply && editedReply.content)
     return (
       <chirpContext.Consumer>
         {context => {
           return (
-            < tbody key={post.id}>
-              <tr id="tr-threads">
-                <td>{post.title}</td>
-                <td>{post.participantsInitials}</td>
-                <td>{post.numOfReplies}</td>
+            <tbody key="tb">
+              <tr key="header" id="tr-threads">
+                <td key="title">{post.title}</td>
+                <td key="par">{post.participantsInitials}</td>
+                <td key="num">{post.numOfReplies}</td>
                 <td className="time-open-column">{post.timeOpen}</td>
-                <td><button onClick={toggleThread}>⬇</button></td>
+                <td key="button"><button onClick={toggleThread}>{this.state.showDetails ? '⬆' : "⬇"}</button></td>
               </tr>
 
               {this.state.showDetails ?
                 <>
+                  <tr key="sd">
+                    <td key="pc" colSpan={6}>{post.content}
+                      <section key="section"></section>
+                      {/* stateful logic to display textarea */}
+                      {this.state.isReplying ?
+                        <>
+                          <p>Submit Reply:</p>
+                          {/* 1.) Click on 'Chirp' 2.) enter reply in textarea 3.) 'Save' new reply*/}
+                          <form key="form" id="create-reply-form" onSubmit={handleFetchCreateReply}>
+                            <textarea key="tar" className="reply-textarea" value={this.state.content} onChange={handleAddedReplyContent} ></textarea>
+                            <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
+                            <SiteButton>Save</SiteButton>
+                          </form>
+                        </> :
+                        // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
+                        <SiteButton onClick={handleChirp}>Chirp</SiteButton>
+                      }
+                    </td>
+                  </tr>
+                  {this.state.isEdited && (
+                    <tr key="rce" className="edit-reply-section">
+                      <td key="col" colSpan={6}>
+                        {/* siblings are vertical */}
+                        <textarea key="edit-reply ta" value={editedText} onChange={handleTextareaEdit} />
+                        <div key="sb's">
+                          <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
+                          <SiteButton onClick={(e) => handleFetchEditReply(this.state.replyIdToBeEdited)}>Save</SiteButton>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
                   {post.replies.map(reply => {
                     return (
-                      <>
-                        <tr>
-                          <td colSpan={6}>{post.content}
-                            <section></section>
-                            {/* stateful logic to display textarea */}
-                            {this.state.isReplying ?
-                              <>
-                                <p>Submit Reply:</p>
-                                {/* 1.) Click on 'Chirp' 2.) enter reply in textarea 3.) 'Save' new reply*/}
-                                <form id="create-reply-form" onSubmit={(e) => handleFetchCreateReply(e, reply.id)}>
-                                  <textarea className="reply-textarea" value={this.state.content} onChange={handleAddedReplyContent} ></textarea>
-                                  <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                                  <SiteButton>Save</SiteButton>
-                                </form>
-                              </> :
-                              // onClick of 'Chirp' buttton opens up form with an empty textbox to render input from user --clicking on 'Save' button will submit user input and add reply to message board 
-                              <SiteButton onClick={handleChirp}>Chirp</SiteButton>
-                            }
-                          </td>
-                        </tr>
+                      <React.Fragment key={reply.id}>
                         <tr className="replies-section">
-                          <td colSpan={6}>
+                          <td key="colr" colSpan={6}>
                             {!this.state.isEdited &&
-                              <section onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} className="reply-section">{reply.content || 'There was no reply.'}</section>
+                              <section key="rsec" onChange={(e) => this.setState({ content: e.target.value })} value={this.state.content} className="reply-section">{reply.content || 'There was no reply.'}</section>
                             }
                             <div className="thread-btns">
                               {/* document.getElementById = previousElementSibling */}
-                              {!this.state.isEdited && <SiteButton onClick={toggleEdit}>Edit</SiteButton>}
+                              {!this.state.isEdited && <SiteButton onClick={() => toggleEdit(reply.id)}>Edit</SiteButton>}
                               {!this.state.isDeleted && !this.state.isEdited && <SiteButton onClick={() => handleFetchDeleteReply(reply.id)}>Drop</SiteButton>}
                             </div>
                           </td>
                         </tr>
-                        {this.state.isEdited && (
-                          <tr className="edit-reply-section">
-                            <td colSpan={6}>
-                              {/* siblings are vertical */}
-                              <textarea value={this.state.content} onChange={handleTextareaEdit} />
-                              <div>
-                                <SiteButton onClick={toggleCancel}>Cancel</SiteButton>
-                                <SiteButton onClick={(e) => handleFetchEditReply(e, reply.id)}>Save</SiteButton>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </>
+                      </React.Fragment>
                     )
                   })}
                 </> : null

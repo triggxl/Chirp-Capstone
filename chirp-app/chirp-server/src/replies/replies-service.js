@@ -1,4 +1,5 @@
 const RepliesService = {
+
   getAllReplies(knex) {
     return knex.select('*').from('replies')
   },

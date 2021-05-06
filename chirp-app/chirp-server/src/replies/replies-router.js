@@ -26,9 +26,9 @@ repliesRouter
   })
   .post(jsonParser, (req, res, next) => {
     // what our client gave us
-    const { content, postid, id } = req.body
-    // destructuring and creating new object with new keys
-    const reply = { content, postid, id }
+    const { content, postId, id } = req.body
+    // destructuring and creating new object with new keys server: client
+    const reply = { content, postid: postId, id }
     console.log(req.body, reply)
 
     for (const [key, value] of Object.entries(reply)) {
@@ -46,7 +46,7 @@ repliesRouter
       .then(reply => {
         res
           .status(201)
-          .location(path.posix.join(req.originalUrl, `/${reply.replyId}`))
+          .location(path.posix.join(req.originalUrl, `/${reply.id}`))
           .json(serializeReply(reply))
       })
       .catch(next)
