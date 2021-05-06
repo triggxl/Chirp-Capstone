@@ -12,6 +12,11 @@
   border: 2px solid black;
 }
 
+#cr-sec {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 .reply-textarea, #topic-header {
   display: block;
   margin: auto;

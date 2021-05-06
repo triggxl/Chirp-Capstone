@@ -51,7 +51,15 @@ class messageBoard extends React.Component {
         }
         return res.json()
       }).catch(error => this.setState({ error }
-      )).then(() => this.context.createNewPost(this.state.id, this.state.title, this.state.content)
+      )).then(() => {
+        this.context.createNewPost(this.state.id, this.state.title, this.state.content)
+        this.setState({
+          isCreatingPost: false,
+          title: '',
+          content: '',
+          showAddForm: false
+        })
+      }
       )
     }
 
@@ -87,7 +95,7 @@ class messageBoard extends React.Component {
         <table id="mb-table">
           <thead>
             <tr id="table-row">
-              <th>Title</th>
+              <th id="title-tr-mb">Title:</th>
             </tr>
           </thead>
           {this.context.posts.map(post => {

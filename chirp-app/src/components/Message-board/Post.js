@@ -165,10 +165,9 @@ class Post extends React.Component {
                 <td key="title">{post.title}</td>
                 <td key="button"><button onClick={toggleThread}>{this.state.showDetails ? '⬆' : "⬇"}</button></td>
               </tr>
-
               {this.state.showDetails ?
-                <>
-                  {/* <p id="topic-header">Post Topic:</p> */}
+                <React.Fragment>
+                  <tr key="cr-sec" id="cr-sec"> Content and Replies Section:</tr>
                   <tr key="sd">
                     <td className="col-span" colSpan={6}>{post.content}
                       <section key="section"></section>
@@ -218,7 +217,7 @@ class Post extends React.Component {
                       </React.Fragment>
                     )
                   })}
-                </> : null
+                </React.Fragment> : null
               }
             </tbody>
           )
