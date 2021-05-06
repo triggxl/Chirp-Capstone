@@ -2,7 +2,6 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import landingPage from './components/Landing-page/landing-page';
 import messageBoard from './components/Message-board/message-board';
-import profilePage from './components/Profile-page/profile-page';
 import chirpContext from './chirp-context/chirpContext';
 import './App.css';
 import { API_URL } from './config'
@@ -134,8 +133,6 @@ class App extends React.Component {
         <Route exact path="/" component={landingPage}>
         </Route>
         <Route path="/message-board" component={messageBoard}>
-        </Route>
-        <Route path="/profile" component={profilePage}>
         </Route>
       </chirpContext.Provider>
     );
