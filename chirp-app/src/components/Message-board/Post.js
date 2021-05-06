@@ -168,14 +168,14 @@ class Post extends React.Component {
 
               {this.state.showDetails ?
                 <>
+                  {/* <p id="topic-header">Post Topic:</p> */}
                   <tr key="sd">
-                    <p id="topic-header">Post Topic:</p>
                     <td className="col-span" colSpan={6}>{post.content}
                       <section key="section"></section>
                       {/* stateful logic to display textarea */}
                       {this.state.isReplying ?
                         <>
-                          <p>Submit Reply:</p>
+                          <p>New Chirp:</p>
                           {/* 1.) Click on 'Chirp' 2.) enter reply in textarea 3.) 'Save' new reply*/}
                           <form key="form" id="create-reply-form" onSubmit={handleFetchCreateReply}>
                             <textarea key="tar" className="reply-textarea" value={this.state.content} onChange={handleAddedReplyContent} ></textarea>

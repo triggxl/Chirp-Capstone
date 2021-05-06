@@ -68,7 +68,7 @@ class messageBoard extends React.Component {
             <div id="user-instructions">
               <h3>Chirp Instructions:</h3>
               <p>1.) Click one of the down arrows to the right to view a post, OR Create your own!</p>
-              <p>2.) Click 'Chirp' to share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!) </p>
+              <p>2.) Click 'Chirp' to reply and share your thoughts in the discussion board! <br /> (You may edit and delete your reply also!) </p>
             </div>
             <SiteButton onClick={handleShowAddForm}>Create New Post</SiteButton>
           </div> :
@@ -88,9 +88,6 @@ class messageBoard extends React.Component {
           <thead>
             <tr id="table-row">
               <th>Title</th>
-              {/* <th>Participants</th> */}
-              {/* <th># of Messages in Thread</th> */}
-              {/* <th className="open-since-column" >Open Since</th> */}
             </tr>
           </thead>
           {this.context.posts.map(post => {
