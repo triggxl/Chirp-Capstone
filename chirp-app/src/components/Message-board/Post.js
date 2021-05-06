@@ -163,16 +163,14 @@ class Post extends React.Component {
             <tbody key="tb">
               <tr key="header" id="tr-threads">
                 <td key="title">{post.title}</td>
-                <td key="par">{post.participantsInitials}</td>
-                <td key="num">{post.numOfReplies}</td>
-                <td className="time-open-column">{post.timeOpen}</td>
                 <td key="button"><button onClick={toggleThread}>{this.state.showDetails ? '⬆' : "⬇"}</button></td>
               </tr>
 
               {this.state.showDetails ?
                 <>
                   <tr key="sd">
-                    <td key="pc" colSpan={6}>{post.content}
+                    <p id="topic-header">Post Topic:</p>
+                    <td className="col-span" colSpan={6}>{post.content}
                       <section key="section"></section>
                       {/* stateful logic to display textarea */}
                       {this.state.isReplying ?
