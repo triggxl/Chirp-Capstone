@@ -1,7 +1,6 @@
 import React from 'react';
 import chirpContext from '../../chirp-context/chirpContext';
 import { Link } from 'react-router-dom';
-// import ChirpingBird from '../pictures/chirping-bird.jpg'
 import ColorfulParrots from '../pictures/colorful-parrots.jpg'
 import OldTelephone from '../pictures/old-telephones.jpg'
 import Typewriter from '../pictures/typerwriter.jpg'
@@ -42,6 +41,7 @@ const landingPage = () => {
             <h2>(An online discussion board)</h2>
             {/* style button to match carosel || have a className="siteButton" */}
             <Link to="/message-board"><SiteButton style={{ fontSize: ".9em" }}>Let's Get Started!</SiteButton></Link>
+            <br />
           </div>
         )
       }}
