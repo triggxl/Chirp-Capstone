@@ -167,7 +167,7 @@ class Post extends React.Component {
               </tr>
               {this.state.showDetails ?
                 <React.Fragment>
-                  <tr key="cr-sec" id="cr-sec"> Content and Replies Section:</tr>
+                  <div key="cr-sec" id="cr-sec"> Content and Replies Section:</div>
                   <tr key="sd">
                     <td className="col-span" colSpan={6}>{post.content}
                       <section key="section"></section>
