@@ -3,14 +3,14 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
-const { NODE_ENV } = require('../src/config');
+const { NODE_ENV, DATABASE_URL } = require('../src/config');
 const postsRouter = require('./posts/posts-router');
 const repliesRouter = require('./replies/replies-router');
 const knex = require('knex')
 
 const db = knex({
   client: 'pg',
-  connection: process.env.DB_URL,
+  connection: process.env.DATABASE_URL,
 })
 
 const app = express();

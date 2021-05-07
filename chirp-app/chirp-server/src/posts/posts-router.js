@@ -29,7 +29,7 @@ postsRouter
 
     for (const [key, value] of Object.entries(post)) {
       if (value == null) {
-        return next(`Missing '${key}' in request body`)
+        return next(`server error`)
       }
     }
     return PostService.insertPosts(

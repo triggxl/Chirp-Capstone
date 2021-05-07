@@ -34,7 +34,7 @@ repliesRouter
     for (const [key, value] of Object.entries(reply)) {
       if (value == null) {
         return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` }
+          error: { message: `server error` }
         })
       }
     }
@@ -64,7 +64,7 @@ repliesRouter
     for (const [key, value] of Object.entries(reply)) {
       if (value == null) {
         return res.status(400).json({
-          error: { message: `Missing '${key}' in request body` }
+          error: { message: `server error` }
         })
       }
     }
